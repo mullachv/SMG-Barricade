@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for ./gameLogic.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../prettify.css">
+
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">./gameLogic.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">100% <small>(114 / 114)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">92.05% <small>(81 / 88)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">100% <small>(11 / 11)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">100% <small>(114 / 114)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">./</a> &#187; gameLogic.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">25</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">125</span>
+<span class="cline-any cline-yes">34</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">39</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">25</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">46</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-yes">84</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">28</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">17</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">22</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+angular.module('myApp', []).factory('gameLogic', function () {
+&nbsp;
+    function getInitialBoard() { // 0..15 * 0..16
+        return [['', '', '', '', '', '', '', '', 'W', '', '', '', '', '', '', '', ''], // 0
+            ['0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0'], // 1
+            ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0'], // 2
+            ['0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0'], // 3
+            ['', '', '', '', '', '', '', '', '1', '', '', '', '', '', '', '', ''], // 4
+            ['', '', '', '', '', '', '0', '0', '1', '0', '0', '', '', '', '', '', ''], // 5
+            ['', '', '', '', '', '', '0', '', '', '', '0', '', '', '', '', '', ''], // 6
+            ['', '', '', '', '0', '0', '1', '0', '0', '0', '1', '0', '0', '', '', '', ''], // 7
+            ['', '', '', '', '0', '', '', '', '', '', '', '', '0', '', '', '', ''], // 8
+            ['', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', ''], // 9
+            ['', '', '0', '', '', '', '0', '', '', '', '0', '', '', '', '0', '', ''], // 10
+            ['1', '0', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '1'], // 11
+            ['0', '', '', '', '0', '', '', '', '0', '', '', '', '0', '', '', '', '0'], // 12
+            ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'], // 13
+            ['', 'R', 'R', 'R', '', 'G', 'G', 'G', '', '', '', '', '', '', '', '', ''], // 14
+            ['', 'R', '', 'R', '', 'G', '', 'G', '', '', '', '', '', '', '', '', '']]; // 15
+    }
+&nbsp;
+    function getWinner(board) {
+        return board[0][8];
+    }
+&nbsp;
+    function getPossibleDestination(board, dice, curr_row, curr_col, last_row, last_col) {
+        if (dice === 0) {
+            return [[curr_row, curr_col]];
+        }
+        if (board[curr_row][curr_col] === '1') {
+            return [];
+        }
+        var left = [], right = [], up = [], down = [], res = [];
+        if (curr_row - 1 &gt;= 0 &amp;&amp; curr_row - 1 !== last_row &amp;&amp; board[curr_row - 1][curr_col] !== '') {
+            up = getPossibleDestination(board, dice - 1, curr_row - 1, curr_col, curr_row, curr_col);
+        }
+        if (curr_row + 1 &lt;= 13 &amp;&amp; curr_row + 1 !== last_row &amp;&amp; board[curr_row + 1][curr_col] !== '') {
+            down = getPossibleDestination(board, dice - 1, curr_row + 1, curr_col, curr_row, curr_col);
+        }
+        if (curr_col - 1 &gt;= 0 &amp;&amp; curr_col - 1 !== last_col &amp;&amp; board[curr_row][curr_col - 1] !== '') {
+            left = getPossibleDestination(board, dice - 1, curr_row, curr_col - 1, curr_row, curr_col);
+        }
+        if (curr_col + 1 &lt;= 16 &amp;&amp; curr_col + 1 !== last_col &amp;&amp; board[curr_row][curr_col + 1] !== '') {
+            right = getPossibleDestination(board, dice - 1, curr_row, curr_col + 1, curr_row, curr_col);
+        }
+        res = left.concat(right, up, down);
+        return res;
+    }
+&nbsp;
+    function checkPath(board, dice, to_row, to_col, from_row, from_col) {
+        if (from_row &gt;= 14) {
+            from_row = 13;
+            from_col = Math.floor(from_col / 4) * 4 + 2;
+            dice -= 1;
+        }
+        var destinations = getPossibleDestination(board, dice, from_row, from_col, -1, -1), i;
+        for (i = 0; i &lt; destinations.length; i += 1) {
+            if (to_row === destinations[i][0] &amp;&amp; to_col === destinations[i][1]) {
+                return true;
+            }
+        }
+&nbsp;
+        return false;
+    }
+&nbsp;
+    function send2Base(board, pawn) {
+        // find the available base place
+        var base = pawn === 'R' ? <span class="branch-0 cbranch-no" title="branch not covered" >0 </span>: (pawn === 'G' ? 1 : (<span class="branch-1 cbranch-no" title="branch not covered" >pawn === 'Y' ? 2 : 3)</span>),
+            start_row = 15,
+            start_col = base * 4 + 1,
+            end_col;
+        if (board[start_row][start_col] === '0') {
+            return [start_row, start_col];
+        }
+        if (board[start_row][start_col + 2] === '0') {
+            return [start_row, start_col + 2];
+        }
+        start_row = start_row - 1;
+        end_col = start_col + 3;
+        for (start_row; start_col &lt; end_col; start_col += 1) {
+            if (board[start_row][start_col] === '0') {
+                return [start_row, start_col];
+            }
+        }
+        throw new Error("Possible cheating on the number of the pawns");
+    }
+&nbsp;
+    function createNormalMove(board, dice, to_row, to_col, from_row, from_col, turnIndexBeforeMove) {
+        if (board === undefined) {
+            board = getInitialBoard();
+        }
+        var whoseTurn = turnIndexBeforeMove === 0 ? 'R' : 'G',
+            boardAfterMove,
+            firstOperation,
+            //nextMoveType,
+            type,
+            winner,
+            pawn,
+            base;
+        winner = getWinner(board);
+        if (winner !== 'W' &amp;&amp; winner !== '1') {
+            throw new Error("Can only make a move if the game is not over!");
+        }
+&nbsp;
+        if (board[from_row][from_col] !== whoseTurn) {
+            throw new Error("One can only move his own pawn!");
+        }
+        if (board[to_row][to_col] === whoseTurn) {
+            throw new Error("One cannot arrive on a place with his own pawn!");
+        }
+        if (!checkPath(board, dice, to_row, to_col, from_row, from_col)) {
+            throw new Error("One cannot go through a barricade or move steps different from the dice value!");
+        }
+&nbsp;
+        boardAfterMove = angular.copy(board);
+&nbsp;
+        boardAfterMove[from_row][from_col] = '0';
+        boardAfterMove[to_row][to_col] = whoseTurn;
+&nbsp;
+        if (board[to_row][to_col] === '0' || board[to_row][to_col] === 'W') {
+            // arrive on an empty place
+            winner = getWinner(boardAfterMove);
+            if (winner !== 'W' &amp;&amp; winner !== '1') {
+                // Game over
+                firstOperation = {endMatch: {endMatchScores:
+                    (winner === 'R' ? [1, 0] : <span class="branch-1 cbranch-no" title="branch not covered" >[0, 1])</span>}};
+            } else {
+                firstOperation = {setTurn: {turnIndex: 1 - turnIndexBeforeMove}};
+            }
+            //nextMoveType = 'dice';
+        } else if (board[to_row][to_col] === '1') {
+            // arrive on a barricade
+            winner = getWinner(boardAfterMove);
+            if (winner !== 'W' &amp;&amp; winner !== '1') {
+                firstOperation = {endMatch: {endMatchScores:
+                    (winner === 'R' ? [1, 0] : <span class="branch-1 cbranch-no" title="branch not covered" >[0, 1])</span>}};
+            } else {
+                firstOperation = {setTurn: {turnIndex: turnIndexBeforeMove}};
+            }
+            //nextMoveType = 'barricade';
+        } else {
+            // arrive on an opponent's pawn
+            pawn = board[to_row][to_col];
+            base = send2Base(board, pawn);
+            boardAfterMove[base[0]][base[1]] = pawn;
+&nbsp;
+            firstOperation = {setTurn: {turnIndex: 1 - turnIndexBeforeMove}};
+            //nextMoveType = 'dice';
+        }
+        return [firstOperation,
+            {set: {key: 'type', value: "normal"}},
+            {set: {key: 'board', value: boardAfterMove}},
+            {set: {key: 'delta', value: {to_row: to_row, to_col: to_col, from_row: from_row, from_col: from_col}}},
+            {set: {key: 'dice', value: dice}}];
+    }
+&nbsp;
+    function placeBarricade(board, to_row, to_col, turnIndexBeforeMove) {
+        if (board === undefined) {
+            throw new Error("Cannot place barricade");
+        }
+        if (board[to_row][to_col] !== '0') {
+            throw new Error("One can only place barricade at an empty place!");
+        }
+        var boardAfterMove = angular.copy(board);
+        boardAfterMove[to_row][to_col] = '1';
+        return [{setTurn: {turnIndex: 1 - turnIndexBeforeMove}},
+            //{set: {key: 'type', value: 'dice'}}
+            {set: {key: 'type', value: 'barricade'}},
+            {set: {key: 'board', value: boardAfterMove}},
+            {set: {key: 'delta', value: {to_row: to_row, to_col: to_col}}},
+            {set: {key: 'dice', value: -1}}
+            ];
+    }
+&nbsp;
+    function createMove(board, type, dice, to_row, to_col, from_row, from_col, turnIndexBeforeMove) {
+        if (type === 'normal') {
+            return createNormalMove(board, dice, to_row, to_col, from_row, from_col, turnIndexBeforeMove);
+        }
+        return placeBarricade(board, to_row, to_col, turnIndexBeforeMove);
+    }
+&nbsp;
+    function createDiceMove(dice, turnIndex) {
+        var move = [{setTurn: {turnIndex: turnIndex}}, {set: {key: "type", value: "dice"}}];
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (dice === undefined) {
+            dice = null;
+        }
+        move.push({setRandomInteger: {key: "dice", from: 1, to : 7}});
+        return move;
+    }
+&nbsp;
+    function isMoveOk(params) {
+        var move = params.move,
+            turnIndexBeforeMove = params.turnIndexBeforeMove,
+            stateBeforeMove = params.stateBeforeMove,
+            type,
+            dice,
+            expectedMove,
+            deltaValue,
+            board,
+            to_row,
+            to_col,
+            from_row,
+            from_col;
+&nbsp;
+        try {
+            type = move[1].set.value;//stateBeforeMove[3].set.value;//
+&nbsp;
+            if (type === "dice") {
+                // Example dice move:
+                // [{setRandomInteger: {key: "dice", from: 1, to: 7}}
+                dice = stateBeforeMove.dice;
+                expectedMove = createDiceMove(dice, turnIndexBeforeMove);
+                if (!angular.equals(move, expectedMove)) {
+                    return false;
+                }
+            } else {
+                // Example move:
+                // [{setTurn: {turnIndex : 1}},
+                //    {set: {key: 'type', value: 'normal'}}],
+                //    {set: {key: 'board', value: [...]}},
+                //    {set: {key: 'delta', value: {to_row: 13, to_col: 2, from_row: 14, from_col: 1}}},
+                // {set: {key: 'dice', value: 1}}
+                deltaValue = move[3].set.value;
+                dice = move[4].set.value;
+                to_row = deltaValue.to_row;
+                to_col = deltaValue.to_col;
+                from_row = deltaValue.from_row;
+                from_col = deltaValue.from_col;
+&nbsp;
+                board = stateBeforeMove.board;
+&nbsp;
+                expectedMove = createMove(board, type, dice, to_row, to_col, from_row, from_col, turnIndexBeforeMove);
+&nbsp;
+                if (!angular.equals(move, expectedMove)) {
+                    return false;
+                }
+            }
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+&nbsp;
+    return {
+        getInitialBoard: getInitialBoard,
+        createMove: createMove,
+        createDiceMove: createDiceMove,
+        isMoveOk: isMoveOk
+    };
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 03 2015 10:43:40 GMT-0500 (EST)</div>
+</div>
+
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+
+<script src="../sorter.js"></script>
+</body>
+</html>
