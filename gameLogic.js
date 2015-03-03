@@ -65,8 +65,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
         return false;
     }
 
+    // find the available base place
     function send2Base(board, pawn) {
-        // find the available base place
         var base = pawn === 'R' ? 0 : (pawn === 'G' ? 1 : (pawn === 'Y' ? 2 : 3)),
             start_row = 15,
             start_col = base * 4 + 1,
@@ -95,7 +95,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
             boardAfterMove,
             firstOperation,
             //nextMoveType,
-            type,
+            //type,
             winner,
             pawn,
             base;
@@ -120,7 +120,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
         boardAfterMove[to_row][to_col] = whoseTurn;
 
         if (board[to_row][to_col] === '0' || board[to_row][to_col] === 'W') {
-            // arrive on an empty place
+            // arrive on an empty place or the winning spot
             winner = getWinner(boardAfterMove);
             if (winner !== 'W' && winner !== '1') {
                 // Game over
@@ -190,6 +190,19 @@ angular.module('myApp', []).factory('gameLogic', function () {
         return move;
     }
 
+    function createPassMove(board, dice, turnIndexBeforeMove) {
+        if (board === undefined) {
+            board = getInitialBoard();
+        }
+        return [
+            {setTurn: {turnIndex: 1 - turnIndexBeforeMove}},
+            {set: {key: 'type', value: 'normal'}},
+            {set: {key: 'board', value: board}},
+            {set: {key: 'delta', value: {}}},
+            {set: {key: 'dice', value: dice}}
+        ];
+    }
+
     function isMoveOk(params) {
         var move = params.move,
             turnIndexBeforeMove = params.turnIndexBeforeMove,
@@ -209,7 +222,9 @@ angular.module('myApp', []).factory('gameLogic', function () {
 
             if (type === "dice") {
                 // Example dice move:
-                // [{setRandomInteger: {key: "dice", from: 1, to: 7}}
+                // [{setTurn: {turnIndex : 1}},
+                // {set: {key: 'type', value: 'dice'}},
+                // {setRandomInteger: {key: "dice", from: 1, to: 7}}]
                 dice = stateBeforeMove.dice;
                 expectedMove = createDiceMove(dice, turnIndexBeforeMove);
                 if (!angular.equals(move, expectedMove)) {
@@ -218,20 +233,25 @@ angular.module('myApp', []).factory('gameLogic', function () {
             } else {
                 // Example move:
                 // [{setTurn: {turnIndex : 1}},
-                //    {set: {key: 'type', value: 'normal'}}],
-                //    {set: {key: 'board', value: [...]}},
-                //    {set: {key: 'delta', value: {to_row: 13, to_col: 2, from_row: 14, from_col: 1}}},
+                // {set: {key: 'type', value: 'normal'}}],
+                // {set: {key: 'board', value: [...]}},
+                // {set: {key: 'delta', value: {to_row: 13, to_col: 2, from_row: 14, from_col: 1}}},
                 // {set: {key: 'dice', value: 1}}
                 deltaValue = move[3].set.value;
                 dice = move[4].set.value;
-                to_row = deltaValue.to_row;
-                to_col = deltaValue.to_col;
-                from_row = deltaValue.from_row;
-                from_col = deltaValue.from_col;
 
                 board = stateBeforeMove.board;
 
-                expectedMove = createMove(board, type, dice, to_row, to_col, from_row, from_col, turnIndexBeforeMove);
+                if (type === "normal" && Object.keys(deltaValue).length === 0) {
+                    expectedMove = createPassMove(board, dice, turnIndexBeforeMove);
+                } else {
+                    to_row = deltaValue.to_row;
+                    to_col = deltaValue.to_col;
+                    from_row = deltaValue.from_row;
+                    from_col = deltaValue.from_col;
+
+                    expectedMove = createMove(board, type, dice, to_row, to_col, from_row, from_col, turnIndexBeforeMove);
+                }
 
                 if (!angular.equals(move, expectedMove)) {
                     return false;
@@ -243,10 +263,56 @@ angular.module('myApp', []).factory('gameLogic', function () {
         return true;
     }
 
+    function getRandomPossibleMove(board, type, dice, turnIndexBeforeMove) {
+        var whoseTurn = turnIndexBeforeMove === 0 ? 'R' : 'G',
+            i,
+            j,
+            targetRow,
+            targetCol,
+            destinations;
+        if (type === "normal") {
+            for (i = 0; i < 16; i += 1) {
+                for (j = 0; j < 17; j += 1) {
+                    if (board[i][j] === whoseTurn) {
+                        if (i >= 14) {
+                            targetRow = 13;
+                            targetCol = Math.floor(j / 4) * 4 + 2;
+                            dice -= 1;
+                        }
+                        destinations = getPossibleDestination(board, dice,
+                            targetRow, targetCol, -1, -1);
+                        if (destinations.length !== 0) {
+                            return createMove(board, "normal", dice,
+                                destinations[0][0], destinations[0][1],
+                                targetRow, targetCol, turnIndexBeforeMove);
+                        }
+                        if (i >= 14) {
+                            break;
+                        }
+                    }
+                }
+            }
+            return createPassMove(board, dice, turnIndexBeforeMove);
+        } else if (type === "barricade") {
+            for (i = 13; i > 0; i -= 1) {
+                for (j = 0; j < 17; j += 1) {
+                    if (board[i][j] === "0") {
+                        return createMove(board, "barricade", dice, i, j, -1, -1,
+                            turnIndexBeforeMove);
+                    }
+                }
+            }
+        } else {
+            return createDiceMove(dice, turnIndexBeforeMove);
+        }
+    }
+
     return {
         getInitialBoard: getInitialBoard,
         createMove: createMove,
         createDiceMove: createDiceMove,
-        isMoveOk: isMoveOk
+        createPassMove: createPassMove,
+        isMoveOk: isMoveOk,
+        getRandomPossibleMove: getRandomPossibleMove
     };
 });

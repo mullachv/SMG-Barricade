@@ -41,7 +41,7 @@ describe("In Barricade", function() {
       ]);
   });
 
-  it("1. step on empty spot (+) case 1", function() {
+  it("1. step on empty spot at the beginning of the game (+)", function() {
     expectMoveOk(0, {},
       [
         {setTurn: {turnIndex : 1}},
@@ -70,7 +70,7 @@ describe("In Barricade", function() {
       ]);
   });
 
-    it("1. step on empty spot (+) case 2", function() {
+    it("1. step on empty spot in the middle of the game (+)", function() {
       expectMoveOk(0, {
         board: [
           ['', '', '', '', '', '', '', '', 'W', '', '', '', '', '', '', '', ''], // 0
@@ -854,7 +854,7 @@ describe("In Barricade", function() {
       ]);
   });
 
-  it("7. end game move (+) case 1", function() {
+  it("7. end game move with a barricade occupying the winning spot (+)", function() {
     expectMoveOk(0, {board: [
       ['', '', '', '', '', '', '', '', '1', '', '', '', '', '', '', '', ''], // 0
       ['0', '0', '0', '0', '0', '0', '0', '0', 'R', '0', '0', '0', '0', '0', '0', '0', '0'], // 1
@@ -903,7 +903,7 @@ describe("In Barricade", function() {
       ]);
   });
 
-    it("7. end game move (+) case 2", function() {
+    it("7. end game move with an empty winning spot (+)", function() {
       expectMoveOk(0, {board: [
         ['', '', '', '', '', '', '', '', 'W', '', '', '', '', '', '', '', ''], // 0
         ['0', '0', '0', '0', '0', '0', '0', '0', 'R', '0', '0', '0', '0', '0', '0', '0', '0'], // 1
@@ -1000,4 +1000,46 @@ describe("In Barricade", function() {
         {set: {key: 'dice', value: 1}}
       ]);
   });
+
+  it("8 pass the turn after rolling the dice (+)", function() {
+    expectMoveOk(0, {},
+      [
+        {setTurn: {turnIndex : 1}},
+        {set: {key: 'type', value: 'normal'}},
+        {set: {key: 'board', value:
+          [
+            ['', '', '', '', '', '', '', '', 'W', '', '', '', '', '', '', '', ''], // 0
+            ['0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0'], // 1
+            ['0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0'], // 2
+            ['0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0'], // 3
+            ['', '', '', '', '', '', '', '', '1', '', '', '', '', '', '', '', ''], // 4
+            ['', '', '', '', '', '', '0', '0', '1', '0', '0', '', '', '', '', '', ''], // 5
+            ['', '', '', '', '', '', '0', '', '', '', '0', '', '', '', '', '', ''], // 6
+            ['', '', '', '', '0', '0', '1', '0', '0', '0', '1', '0', '0', '', '', '', ''], // 7
+            ['', '', '', '', '0', '', '', '', '', '', '', '', '0', '', '', '', ''], // 8
+            ['', '', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', ''], // 9
+            ['', '', '0', '', '', '', '0', '', '', '', '0', '', '', '', '0', '', ''], // 10
+            ['1', '0', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '1', '0', '0', '0', '1'], // 11
+            ['0', '', '', '', '0', '', '', '', '0', '', '', '', '0', '', '', '', '0'], // 12
+            ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'], // 13
+            ['', 'R', 'R', 'R', '', 'G', 'G', 'G', '', '', '', '', '', '', '', '', ''], // 14
+            ['', 'R', '', 'R', '', 'G', '', 'G', '', '', '', '', '', '', '', '', '']
+          ]}},
+        {set: {key: 'delta', value: {}}},
+        {set: {key: 'dice', value: 4}}
+    ]);
+  });
+/*
+  it("9 get random dice move (+)", function() {
+    expectMoveOk();
+  });
+
+  it("10 get random normal move (+)", function() {
+    expectMoveOk();
+  });
+
+  it("11 get random barricade move (+)", function() {
+    expectMoveOk();
+  });
+  */
 })
