@@ -9,6 +9,7 @@ module.exports = function(config){
       'gameLogic.js',
       'gameLogic_test.js',
       'gameLogictest_ByRay.js',
+      'gameLogic_test_ZhuoranLyu.js'
       //'http://yoav-zibin.github.io/emulator/alphaBetaService.js',
       //'aiService.js',
       //'aiService_test.js'
