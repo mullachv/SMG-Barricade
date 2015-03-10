@@ -57,15 +57,15 @@ angular.module('myApp')
                 };
                 $scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
-                    if (row === 0 && col === 8 && cell === "0") {
+                    if (row === 0 && col === 8 && cell === "W") {
                         return "WinningSpot.png";
                     }
                     return cell === "0" ? "EmptySpot.png"
                             : cell === "1" ? "Barricade.png"
-                                : cell === "R" ? "RedPawn.png"
-                                    : cell === "G" ? "GreenPawn.png"
-                                        : cell === "Y" ? "YellowPawn.png"
-                                            : cell === "B" ? "BluePawn.png" : "";
+                                : cell === "R" ? "Red.png"
+                                    : cell === "G" ? "Green.png"
+                                        : cell === "Y" ? "Yellow.png"
+                                            : cell === "B" ? "Blue.png" : "";
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
