@@ -65,7 +65,7 @@ angular.module('myApp')
           : cell === "R" ? "RedPawn.png"
           : cell === "G" ? "GreenPawn.png"
           : cell === "Y" ? "YellowPawn.png"
-          : cell === "B" ? "BluePawn.png";
+          : cell === "B" ? "BluePawn.png" : "WinningSpot.png";
     };
     $scope.shouldSlowlyAppear = function (row, col) {
       return $scope.delta !== undefined &&
