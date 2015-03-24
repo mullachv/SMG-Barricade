@@ -52,8 +52,11 @@ angular.module('myApp')
                     }
                 };
                 $scope.shouldShowImage = function (row, col) {
+                    if (row === 15 && col === 8) {
+                      return true;
+                    }
                     var cell = $scope.board[row][col];
-                    return (row === 15 && col === 8) || (cell !== "");
+                    return cell !== "";
                 };
                 $scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
