@@ -67,6 +67,25 @@ angular.module('myApp')
                                         : cell === "Y" ? "imgs/Yellow.png"
                                             : cell === "B" ? "imgs/Blue.png" : "";
                 };
+                $scope.getDiceImage = function (diceValue) {
+                  switch(diceValue) {
+                    case 1:
+                      return 'imgs/1.png';
+                    case 2:
+                      return 'imgs/2.png';
+                    case 3:
+                      return 'imgs/3.png';
+                    case 4:
+                      return 'imgs/4.png';
+                    case 5:
+                      return 'imgs/5.png';
+                    case 6:
+                      return 'imgs/6.png';
+                    default:
+                      console.log('Error: dice out of range ' + $scope.dice);
+                      return 'imgs/6.png';
+                  }
+                }
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
                             $scope.delta.row === row && $scope.delta.col === col;
