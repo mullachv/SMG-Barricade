@@ -57,7 +57,7 @@ angular.module('myApp')
                 };
                 $scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
-                    var dice = $scope.stateAfterMove.dice;
+                    var dice = $scope.dice;
                     if (row === 0 && col === 8 && cell === "W") {
                         return "imgs/WinningSpot.png";
                     }
