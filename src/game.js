@@ -53,7 +53,7 @@ angular.module('myApp')
                 };
                 $scope.shouldShowImage = function (row, col) {
                     var cell = $scope.board[row][col];
-                    return cell !== "";
+                    return (row === 15 && col === 8) || (cell !== "");
                 };
                 $scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
@@ -89,9 +89,8 @@ angular.module('myApp')
                                             : cell === "B" ? "imgs/Blue.png" : "";
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
-                    return ($scope.delta !== undefined &&
-                            $scope.delta.row === row && $scope.delta.col === col)
-                            || ( row === 15 && col === 8);
+                    return $scope.delta !== undefined &&
+                            $scope.delta.row === row && $scope.delta.col === col;
                 };
 
                 gameService.setGame({
