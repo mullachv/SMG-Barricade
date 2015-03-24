@@ -77,7 +77,7 @@ angular.module('myApp')
                         case 6:
                           return 'imgs/6.png';
                         default:
-                          console.log('Error: dice out of range ' + $scope.dice);
+                          //console.log('Error: dice out of range ' + $scope.dice);
                           return 'imgs/6.png';
                       }
                     }
@@ -89,8 +89,9 @@ angular.module('myApp')
                                             : cell === "B" ? "imgs/Blue.png" : "";
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
-                    return $scope.delta !== undefined &&
-                            $scope.delta.row === row && $scope.delta.col === col;
+                    return ($scope.delta !== undefined &&
+                            $scope.delta.row === row && $scope.delta.col === col)
+                            || ( row === 15 && col === 8);
                 };
 
                 gameService.setGame({
