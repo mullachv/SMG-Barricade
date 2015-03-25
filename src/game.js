@@ -21,7 +21,7 @@ angular.module('myApp')
                 }
 
                 function sendDiceMove() {
-                    $log.info(["Dice roll"]);
+                    $log.info(["Dice roll for", $scope.turnIndex]);
                     gameService.makeMove(gameLogic.createDiceMove($scope.dice, $scope.turnIndex));
                 }
 
@@ -30,6 +30,9 @@ angular.module('myApp')
                     $scope.board = params.stateAfterMove.board;
                     $scope.delta = params.stateAfterMove.delta;
                     $scope.dice = params.stateAfterMove.dice;
+                    if ($scope.dice !== null) {
+                        $log.info(["Dice value ", $scope.dice]);
+                    }
                     if ($scope.board === undefined) {
                         $log.info(["Initializing"]);
                         $scope.board = gameLogic.getInitialBoard();
