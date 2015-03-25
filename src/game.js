@@ -65,7 +65,7 @@ angular.module('myApp')
                         } else if ($scope.typeExpected === "barricade") {
                             $timeout(sendComputerBarricadeMove, 500);
                         }
-                    } else {
+                    } else if ($scope.isYourTurn){
                         $log.info(["Player turn with dice", $scope.dice]);
                         if (!$scope.dice) {
                             $timeout(sendDiceMove, 500);
