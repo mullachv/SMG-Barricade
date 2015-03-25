@@ -1,4 +1,5 @@
 describe("In Barricade", function() {
+  'use strict';
   var _gameLogic;
 
   beforeEach(module("myApp"));
@@ -432,4 +433,4 @@ describe("In Barricade", function() {
         {set: {key: 'dice', value: -1}}
       ]);
   });
-})
+});

@@ -1,4 +1,5 @@
 describe("In Barricade", function() {
+  'use strict';
   var _gameLogic;
 
   beforeEach(module("myApp"));
@@ -1029,17 +1030,4 @@ describe("In Barricade", function() {
         {set: {key: 'dice', value: 4}}
     ]);
   });
-/*
-  it("9 get random dice move (+)", function() {
-    expectMoveOk();
-  });
-
-  it("10 get random normal move (+)", function() {
-    expectMoveOk();
-  });
-
-  it("11 get random barricade move (+)", function() {
-    expectMoveOk();
-  });
-  */
-})
+});

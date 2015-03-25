@@ -3,6 +3,7 @@
  */
 
 describe("In Barricade", function() {
+  'use strict';
   var _gameLogic;
 
   beforeEach(module("myApp"));
@@ -11,13 +12,13 @@ describe("In Barricade", function() {
     _gameLogic = gameLogic;
   }));
 
-  function expectMoveOk(turnIndexBeforeMove, stateBeforeMove, move) {
+/*  function expectMoveOk(turnIndexBeforeMove, stateBeforeMove, move) {
     expect (_gameLogic.isMoveOk({
       turnIndexBeforeMove: turnIndexBeforeMove,
       stateBeforeMove: stateBeforeMove,
       move: move
     })).toBe(true);
-  }
+  }*/
 
   function expectIllegalMove(turnIndexBeforeMove, stateBeforeMove, move) {
     expect (_gameLogic.isMoveOk({
@@ -27,7 +28,7 @@ describe("In Barricade", function() {
     })).toBe(false);
   }
 
-  
+
   it("1. step on empty spot (-) through an illegal path", function() {
     expectIllegalMove(0, {},
       [
@@ -57,4 +58,4 @@ describe("In Barricade", function() {
       ]);
   });
 
-})
+});

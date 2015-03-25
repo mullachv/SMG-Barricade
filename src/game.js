@@ -121,7 +121,7 @@ angular.module('myApp')
                             }
                         }
                     } else if ($scope.typeExpected === "barricade"){
-                        $log.info(["Place a barricade"])
+                        $log.info(["Place a barricade"]);
                         if (prev_row === null || prev_col === null) {
                             $log.info(["Place a barricade at:", row, col]);
                             prev_row = null;
@@ -162,7 +162,7 @@ angular.module('myApp')
                               return;
                           }
                       }
-                }
+                };
                 $scope.shouldShowImage = function (row, col) {
                     var cell = $scope.board[row][col];
                     return cell !== "";
@@ -198,7 +198,7 @@ angular.module('myApp')
                             //console.log('Error: dice out of range ' + $scope.dice);
                             return 'imgs/6.png';
                     }
-                }
+                };
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
                             $scope.delta.row === row && $scope.delta.col === col;
