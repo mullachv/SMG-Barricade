@@ -1,7 +1,7 @@
 angular.module('myApp')
     .controller('Ctrl',
-            ['$scope', '$log', '$timeout', 'gameService', 'gameLogic', 'resizeGameAreaService',
-            function ($scope, $log, $timeout, gameService, gameLogic, resizeGameAreaService) {
+            ['$scope', '$log', '$timeout', 'gameService', 'stateService', 'gameLogic', 'resizeGameAreaService',
+            function ($scope, $log, $timeout, gameService, stateService, gameLogic, resizeGameAreaService) {
 
                 'use strict';
 
@@ -70,7 +70,7 @@ angular.module('myApp')
                         }
                     }
                 }
-                //window.e2e_test_stateService = stateService; // to allow us to load any state in our e2e tests.
+                window.e2e_test_stateService = stateService; // to allow us to load any state in our e2e tests.
 
                 var prev_row = null;
                 var prev_col = null;
