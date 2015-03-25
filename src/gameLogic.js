@@ -284,7 +284,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         if (destinations.length !== 0) {
                             return createMove(board, "normal", dice,
                                 destinations[0][0], destinations[0][1],
-                                targetRow, targetCol, turnIndexBeforeMove);
+                                i, j, turnIndexBeforeMove);
                         }
                         if (i >= 14) {
                             break;
