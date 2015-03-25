@@ -114,6 +114,7 @@ angular.module('myApp')
                                 prev_col = null;
                             } catch (e) {
                                 $log.info(["Illegal move from ", row, col, " to ", prev_row, prev_col]);
+                                $scope.isYourTurn = true;
                                 return;
                             }
                         }
@@ -132,6 +133,7 @@ angular.module('myApp')
                                     -1, -1, $scope.turnIndex));
                         } catch (e) {
                             $log.info(["Illegal to place a barricade at:", row, col]);
+                            $scope.isYourTurn = true;
                             return;
                         }
                     }
