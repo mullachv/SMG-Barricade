@@ -42,6 +42,12 @@
           ng-src="{{getImageSrc(row, col)}}">
     </div>
   </div>
+  <img ng-class="{piece: true}"
+      ng-src="{{getDiceSrc()}}"
+      style="position:absolute; top:50%; right:80%; width:7%; height:7%">
+  <div class="button" ng-click="passMove()" style="position:absolute; top:60%; right:80%; width:10%; height:7%">
+    Pass
+  </div>
 </div>
 
 </body>

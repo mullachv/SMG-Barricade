@@ -140,10 +140,30 @@ angular.module('myApp')
                         }
                     }
                 };
+                $scope.passMove = function() {
+                      if (window.location.search === '?throwException') { // to test encoding a stack trace with sourcemap
+                          throw new Error("Throwing the error because URL has '?throwException'");
+                      }
+                      if (!$scope.isYourTurn) {
+                          $log.info(["Wait until your turn"]);
+                          return;
+                      }
+                      if (!$scope.dice) { // wait until dice rolls
+                          $log.info(["Wait until dice rolls"]);
+                          return;
+                      }
+                      if ($scope.typeExpected === "normal") {
+                          try {
+                              $scope.isYourTurn = false;
+                              gameService.makeMove(gameLogic.createPassMove(
+                                  $scope.board, $scope.dice, $scope.turnIndex));
+                          } catch(e) {
+                              $log.info(["Illegal pass move"]);
+                              return;
+                          }
+                      }
+                }
                 $scope.shouldShowImage = function (row, col) {
-                    if (row === 15 && col === 8) {
-                      return true;
-                    }
                     var cell = $scope.board[row][col];
                     return cell !== "";
                 };
@@ -154,25 +174,6 @@ angular.module('myApp')
                         return "imgs/WinningSpot.png";
                     }
 
-                    if (row === 15 && col === 8) {
-                        switch(dice) {
-                            case 1:
-                                return 'imgs/1.png';
-                            case 2:
-                                return 'imgs/2.png';
-                            case 3:
-                                return 'imgs/3.png';
-                            case 4:
-                                return 'imgs/4.png';
-                            case 5:
-                                return 'imgs/5.png';
-                            case 6:
-                                return 'imgs/6.png';
-                            default:
-                                //console.log('Error: dice out of range ' + $scope.dice);
-                                return 'imgs/6.png';
-                        }
-                    }
                     return cell === "0" ? "imgs/EmptySpot.png"
                             : cell === "1" ? "imgs/Barricade.png"
                                 : cell === "R" ? "imgs/Red.png"
@@ -180,6 +181,25 @@ angular.module('myApp')
                                         : cell === "Y" ? "imgs/Yellow.png"
                                             : cell === "B" ? "imgs/Blue.png" : "";
                 };
+                $scope.getDiceSrc = function() {
+                    switch(dice) {
+                        case 1:
+                            return 'imgs/1.png';
+                        case 2:
+                            return 'imgs/2.png';
+                        case 3:
+                            return 'imgs/3.png';
+                        case 4:
+                            return 'imgs/4.png';
+                        case 5:
+                            return 'imgs/5.png';
+                        case 6:
+                            return 'imgs/6.png';
+                        default:
+                            //console.log('Error: dice out of range ' + $scope.dice);
+                            return 'imgs/6.png';
+                    }
+                }
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
                             $scope.delta.row === row && $scope.delta.col === col;
