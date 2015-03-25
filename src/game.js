@@ -26,7 +26,6 @@ angular.module('myApp')
                 }
 
                 function updateUI(params) {
-                    $log.info(["Update UI"]);
                     var lastType = params.stateAfterMove.type;
                     $scope.board = params.stateAfterMove.board;
                     $scope.delta = params.stateAfterMove.delta;
@@ -41,9 +40,11 @@ angular.module('myApp')
                         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
                     $scope.turnIndex = params.turnIndexAfterMove;
                     if (params.turnIndexBeforeMove !== params.turnIndexAfterMove) {
+                        $log.info(["Change player..."]);
                         $scope.dice = null;
                         $scope.typeExpected = "dice";
                     } else {
+                        $log.info(["Player continues..."]);
                         if (lastType === "normal") {
                             $scope.typeExpected = "barricade";
                         } else {
@@ -54,12 +55,14 @@ angular.module('myApp')
                     // Is it the computer's turn?
                     if ($scope.isYourTurn &&
                             params.playersInfo[params.yourPlayerIndex].playerId === '') {
+                        $log.info(["Computer turn"]);
                         $scope.isYourTurn = false; // to make sure the UI won't send another move.
                         // Waiting 0.5 seconds to let the move animation finish; if we call aiService
                         // then the animation is paused until the javascript finishes.
                         $timeout(sendComputerMove, 500);
                     } else {
-                        if ($scope.dice = null) {
+                        $log.info(["Player turn"]);
+                        if ($scope.dice === null) {
                             $timeout(sendDiceMove, 500);
                         }
                     }
