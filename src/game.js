@@ -65,9 +65,8 @@ angular.module('myApp')
                         // then the animation is paused until the javascript finishes.
                         $timeout(sendComputerMove, 500);
                     } else {
-                        $log.info(["Player turn"]);
+                        $log.info(["Player turn with dice", $scope.dice]);
                         if (!$scope.dice) {
-                            $log.info(["==Preparing dice roll"]);
                             $timeout(sendDiceMove, 500);
                         }
                     }
