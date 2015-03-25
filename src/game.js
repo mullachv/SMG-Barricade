@@ -7,17 +7,14 @@ angular.module('myApp')
 
                 resizeGameAreaService.setWidthToHeight(1.0625);
 
-                function sendComputerMove() {
-                    var turnIndex = $scope.turnIndex;
-                    sendDiceMove();
-
+                function sendComputerNormalMove() {
                     gameService.makeMove(gameLogic.createRandomPossibleMove($scope.board,
                         "normal", $scope.dice, $scope.turnIndex));
+                }
 
-                    if ($scope.turnIndex === turnIndex) {
-                        gameService.makeMove(gameLogic.createRandomPossibleMove($scope.board,
-                            "barricade", -1, $scope.turnIndex));
-                    }
+                function sendComputerBarricadeMove() {
+                    gameService.makeMove(gameLogic.createRandomPossibleMove($scope.board,
+                        "barricade", -1, $scope.turnIndex));
                 }
 
                 function sendDiceMove() {
@@ -61,7 +58,13 @@ angular.module('myApp')
                         $scope.isYourTurn = false; // to make sure the UI won't send another move.
                         // Waiting 0.5 seconds to let the move animation finish; if we call aiService
                         // then the animation is paused until the javascript finishes.
-                        $timeout(sendComputerMove, 500);
+                        if (!$scope.dice) {
+                            $timeout(sendDiceMove, 500);
+                        } else if ($scope.typeExpected === "normal") {
+                            $timeout(sendComputerNormalMove, 500);
+                        } else if ($scope.typeExpected === "barricade") {
+                            $timeout(sendComputerBarricadeMove, 500);
+                        }
                     } else {
                         $log.info(["Player turn with dice", $scope.dice]);
                         if (!$scope.dice) {
