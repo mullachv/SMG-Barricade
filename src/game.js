@@ -25,10 +25,12 @@ angular.module('myApp')
                 }
 
                 function updateUI(params) {
+                    $log.info(["Update UI"]);
                     var lastType = params.stateAfterMove.type;
                     $scope.board = params.stateAfterMove.board;
                     $scope.delta = params.stateAfterMove.delta;
                     if ($scope.board === undefined) {
+                        $log.info(["Initializing"]);
                         $scope.board = gameLogic.getInitialBoard();
                         $scope.dice = null;
                         $scope.typeExpected = "dice";
