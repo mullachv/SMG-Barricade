@@ -111,7 +111,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
             throw new Error("One cannot arrive on a place with his own pawn!");
         }
         if (!checkPath(board, dice, to_row, to_col, from_row, from_col)) {
-            throw new Error("One cannot go through a barricade or move steps different from the dice value!");
+            throw new Error("One cannot go through a barricade or move steps different from the dice value!",
+            dice, to_row, to_col, from_row, from_col);
         }
 
         boardAfterMove = angular.copy(board);
