@@ -67,6 +67,7 @@ angular.module('myApp')
                     } else {
                         $log.info(["Player turn"]);
                         if ($scope.dice === null) {
+                            $log.info(["==Preparing dice roll"]);
                             $timeout(sendDiceMove, 500);
                         }
                     }
