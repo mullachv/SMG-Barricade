@@ -53,6 +53,7 @@ angular.module('myApp')
                         } else {
                             $scope.typeExpected = "normal";
                         }
+                        $log.info(["Player continues...", $scope.typeExpected]);
                     }
 
                     // Is it the computer's turn?
