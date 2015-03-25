@@ -65,19 +65,21 @@ angular.module('myApp')
                 var prev_row = null;
                 var prev_col = null;
                 $scope.cellClicked = function (row, col) {
-                    $log.info(["Clicked on cell:", row, col]);
                     if (window.location.search === '?throwException') { // to test encoding a stack trace with sourcemap
                         throw new Error("Throwing the error because URL has '?throwException'");
                     }
                     if (!$scope.isYourTurn) {
+                        $log.info(["Wait until your turn"]);
                         return;
                     }
                     if (!$scope.dice) { // wait until dice rolls
+                        $log.info(["Wait until dice rolls"]);
                         return;
                     }
 
                     // normal move, get a pawn and place it.
                     if ($scope.typeExpected === "normal") {
+                        $log.info(["Make a normal move:"]);
                         // choose the start point
                         if (prev_row === null || prev_col === null) {
                             if ($scope.shouldShowImage(row, col) &&
@@ -85,12 +87,14 @@ angular.module('myApp')
                                 $scope.board[row][col] !== '0') {
                                 prev_row = row;
                                 prev_col = col;
+                                $log.info(["Choose a pawn:", row, col]);
                             }
                             return;
                         } else {
                             try { // choose the end point
                               // to prevent making another move
                                 $scope.isYourTurn = false;
+                                $log.info(["Choose a destination", row, col]);
                                 gameService.makeMove(gameLogic.createMove(
                                     $scope.board, "normal", $scope.dice, row, col,
                                         prev_row, prev_col, $scope.turnIndex));
@@ -102,6 +106,7 @@ angular.module('myApp')
                             }
                         }
                     } else if ($scope.typeExpected === "barricade"){
+                        $log.info(["Place a barricade"])
                         if (prev_row === null || prev_col === null) {
                             $log.info(["Place a barricade at:", row, col]);
                             prev_row = null;
@@ -109,6 +114,7 @@ angular.module('myApp')
                         }
                         try {
                             $scope.isYourTurn = false;
+                            $log.info(["Choose a position", row, col]);
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "barricade", $scope.dice, row, col,
                                     -1, -1, $scope.turnIndex));
