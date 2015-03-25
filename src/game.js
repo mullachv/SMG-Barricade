@@ -169,7 +169,6 @@ angular.module('myApp')
                 };
                 $scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
-                    var dice = $scope.dice;
                     if (row === 0 && col === 8 && cell === "W") {
                         return "imgs/WinningSpot.png";
                     }
@@ -182,7 +181,7 @@ angular.module('myApp')
                                             : cell === "B" ? "imgs/Blue.png" : "";
                 };
                 $scope.getDiceSrc = function() {
-                    switch(dice) {
+                    switch($scope.dice) {
                         case 1:
                             return 'imgs/1.png';
                         case 2:
