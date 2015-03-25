@@ -21,7 +21,8 @@ angular.module('myApp')
                 }
 
                 function sendDiceMove() {
-                  gameService.makeMove(gameLogic.createDiceMove($scope.dice, $scope.turnIndex));
+                    $log.info(["Dice roll"]);
+                    gameService.makeMove(gameLogic.createDiceMove($scope.dice, $scope.turnIndex));
                 }
 
                 function updateUI(params) {
