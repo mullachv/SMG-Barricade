@@ -277,9 +277,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         if (i >= 14) {
                             targetRow = 13;
                             targetCol = Math.floor(j / 4) * 4 + 2;
-                            dice -= 1;
                         }
-                        destinations = getPossibleDestination(board, dice,
+                        destinations = getPossibleDestination(board, dice - 1,
                             targetRow, targetCol, -1, -1);
                         if (destinations.length !== 0) {
                             return createMove(board, "normal", dice,

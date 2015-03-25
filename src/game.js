@@ -115,6 +115,8 @@ angular.module('myApp')
                             } catch (e) {
                                 $log.info(["Illegal move from ", row, col, " to ", prev_row, prev_col]);
                                 $scope.isYourTurn = true;
+                                prev_row = null;
+                                prev_col = null;
                                 return;
                             }
                         }
