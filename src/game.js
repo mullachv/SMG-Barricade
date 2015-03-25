@@ -30,6 +30,8 @@ angular.module('myApp')
                     $scope.delta = params.stateAfterMove.delta;
                     if ($scope.board === undefined) {
                         $scope.board = gameLogic.getInitialBoard();
+                        $scope.dice = null;
+                        $scope.typeExpected = "dice";
                     }
                     $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
                         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
