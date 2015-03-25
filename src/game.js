@@ -29,6 +29,7 @@ angular.module('myApp')
                     var lastType = params.stateAfterMove.type;
                     $scope.board = params.stateAfterMove.board;
                     $scope.delta = params.stateAfterMove.delta;
+                    $scope.dice = params.stateAfterMove.dice;
                     if ($scope.board === undefined) {
                         $log.info(["Initializing"]);
                         $scope.board = gameLogic.getInitialBoard();
@@ -39,8 +40,8 @@ angular.module('myApp')
                         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
                     $scope.turnIndex = params.turnIndexAfterMove;
                     if (params.turnIndexBeforeMove !== params.turnIndexAfterMove) {
-                      $scope.dice = null;
-                      $scope.typeExpected = "dice";
+                        $scope.dice = null;
+                        $scope.typeExpected = "dice";
                     } else {
                         if (lastType === "normal") {
                             $scope.typeExpected = "barricade";
