@@ -8,12 +8,12 @@ angular.module('myApp')
                 resizeGameAreaService.setWidthToHeight(1.0625);
 
                 function sendComputerNormalMove() {
-                    gameService.makeMove(gameLogic.createRandomPossibleMove($scope.board,
+                    gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
                         "normal", $scope.dice, $scope.turnIndex));
                 }
 
                 function sendComputerBarricadeMove() {
-                    gameService.makeMove(gameLogic.createRandomPossibleMove($scope.board,
+                    gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
                         "barricade", -1, $scope.turnIndex));
                 }
 
