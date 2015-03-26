@@ -168,31 +168,24 @@ angular.module('myApp')
                     return cell !== "";
                 };
                 $scope.isWinSpot = function (row, col) {
-                    $log.info(["W"+row + col]);
                     return $scope.board[row][col] === 'W';
                 };
                 $scope.isPieceR = function (row, col) {
-                    $log.info(["R"+row + col]);
                     return $scope.board[row][col] === 'R';
                 };
                 $scope.isPieceG = function (row, col) {
-                    $log.info(["G"+row + col]);
                     return $scope.board[row][col] === 'G';
                 };
                 $scope.isPieceB = function (row, col) {
-                    $log.info(["B"+row + col]);
                     return $scope.board[row][col] === 'B';
                 };
                 $scope.isPieceY = function (row, col) {
-                    $log.info(["Y"+row + col]);
                     return $scope.board[row][col] === 'Y';
                 };
                 $scope.isBarricade = function (row, col) {
-                    $log.info(["1"+row + col]);
                     return $scope.board[row][col] === '1';
                 };
                 $scope.isEmptySpot = function (row, col) {
-                    $log.info(["0"+row + col]);
                     return $scope.board[row][col] === '0';
                 };
                 /*$scope.getImageSrc = function (row, col) {
@@ -235,7 +228,7 @@ angular.module('myApp')
                 gameService.setGame({
                     gameDeveloperEmail: "hy821@nyu.edu",
                     minNumberOfPlayers: 2,
-                    maxNumberOfPlayers: 2,
+                    maxNumberOfPlayers: 4,
                     isMoveOk: gameLogic.isMoveOk,
                     updateUI: updateUI
                 });

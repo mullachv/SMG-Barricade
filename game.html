@@ -31,7 +31,7 @@
 </head>
 <body ng-cloak ng-controller="Ctrl">
 
-<div id="gameArea">
+<div id="gameArea" style="background-color:beige">
   <div ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"
       style="position:absolute; top:{{row * 6.25}}%; left:0; width:100%; height:6.25%;">
     <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]"
@@ -44,53 +44,53 @@
         <svg ng-show="isWinSpot(row,col)"
           id="{{'e2e_test_winSpot'}}" width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="wheat" />
+              stroke="dimgray" stroke-width="5%" fill="burlywood" />
         </svg>
         <svg ng-show="isEmptySpot(row,col)"
           id="{{'e2e_test_empty_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="white" />
+              stroke="dimgray" stroke-width="5%" fill="white" />
         </svg>
         <svg ng-show="isPieceR(row,col)"
           id="{{'e2e_test_pieceR_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="red" />
+              stroke="dimgray" stroke-width="5%" fill="lightcoral" />
         </svg>
         <svg ng-show="isPieceG(row,col)"
           id="{{'e2e_test_pieceG_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="green" />
+              stroke="dimgray" stroke-width="5%" fill="olivedrab" />
         </svg>
         <svg ng-show="isPieceB(row,col)"
           id="{{'e2e_test_pieceB_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="blue" />
+              stroke="dimgray" stroke-width="5%" fill="lightskyblue" />
         </svg>
         <svg ng-show="isPieceY(row,col)"
           id="{{'e2e_test_pieceY_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="yellow" />
+              stroke="dimgray" stroke-width="5%" fill="orange" />
         </svg>
         <svg ng-show="isBarricade(row,col)"
           id="{{'e2e_test_barricade_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
-              stroke="black" stroke-width="5%" fill="black" />
+              stroke="dimgray" stroke-width="5%" fill="black" />
         </svg>
       </div>
     </div>
   </div>
   <img ng-class="{piece: true}" ng-src="{{getDiceSrc()}}"
-      style="position:absolute; top:30%; left:90%; width:7%; height:7%"
+      style="position:absolute; top:35%; left:85%; width:10%; height:10%"
       id="e2e_test_dice">
   <div class="button" ng-click="passMove()"
-      style="position:absolute; top:40%; left:90%; width:10%; height:7%"
-      id="e2e_test_btn">
+      style="position:absolute; top:45%; left:85%; width:10%; height:7%; font-family:Papyrus"
+      id="e2e_test_btn" >
     Pass
   </div>
 </div>
