@@ -42,12 +42,13 @@
           ng-show="shouldShowImage(row, col)"
           style="width:100%; height:100%">
         <svg ng-show="isWinSpot(row,col)"
-          id="{{'e2e_test_winSpot'}}" width="100%" height="100%">
+          id="{{'e2e_test_pieceW_' + row + 'x' + col}}"
+          width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
               stroke="dimgray" stroke-width="5%" fill="burlywood" />
         </svg>
         <svg ng-show="isEmptySpot(row,col)"
-          id="{{'e2e_test_empty_' + row + 'x' + col}}"
+          id="{{'e2e_test_piece0_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
               stroke="dimgray" stroke-width="5%" fill="white" />
@@ -77,7 +78,7 @@
               stroke="dimgray" stroke-width="5%" fill="orange" />
         </svg>
         <svg ng-show="isBarricade(row,col)"
-          id="{{'e2e_test_barricade_' + row + 'x' + col}}"
+          id="{{'e2e_test_piece1_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="27%"
               stroke="dimgray" stroke-width="5%" fill="black" />

@@ -88,7 +88,13 @@ module.exports = function(grunt) {
             'languages/en.js',
             'http://yoav-zibin.github.io/emulator/main.css',
             'dist/everything.min.js',
-            'game.css'
+            'game.css',
+            'imgs/1.png',
+            'imgs/2.png',
+            'imgs/3.png',
+            'imgs/4.png',
+            'imgs/5.png',
+            'imgs/6.png'
           ],
           network: ['dist/everything.min.js.map', 'dist/everything.js'],
           timestamp: true

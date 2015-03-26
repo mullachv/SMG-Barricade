@@ -432,7 +432,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                                 prev_row = null;
                                 prev_col = null;
                             } catch (e) {
-                                $log.info(["Illegal move from ", row, col, " to ", prev_row, prev_col]);
+                                $log.info(["Illegal move to ", row, col, " from ", prev_row, prev_col]);
                                 $scope.isYourTurn = true;
                                 prev_row = null;
                                 prev_col = null;
@@ -486,7 +486,28 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     var cell = $scope.board[row][col];
                     return cell !== "";
                 };
-                $scope.getImageSrc = function (row, col) {
+                $scope.isWinSpot = function (row, col) {
+                    return $scope.board[row][col] === 'W';
+                };
+                $scope.isPieceR = function (row, col) {
+                    return $scope.board[row][col] === 'R';
+                };
+                $scope.isPieceG = function (row, col) {
+                    return $scope.board[row][col] === 'G';
+                };
+                $scope.isPieceB = function (row, col) {
+                    return $scope.board[row][col] === 'B';
+                };
+                $scope.isPieceY = function (row, col) {
+                    return $scope.board[row][col] === 'Y';
+                };
+                $scope.isBarricade = function (row, col) {
+                    return $scope.board[row][col] === '1';
+                };
+                $scope.isEmptySpot = function (row, col) {
+                    return $scope.board[row][col] === '0';
+                };
+                /*$scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
                     if (row === 0 && col === 8 && cell === "W") {
                         return "imgs/WinningSpot.png";
@@ -498,7 +519,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                                     : cell === "G" ? "imgs/Green.png"
                                         : cell === "Y" ? "imgs/Yellow.png"
                                             : cell === "B" ? "imgs/Blue.png" : "";
-                };
+                };*/
                 $scope.getDiceSrc = function() {
                     switch($scope.dice) {
                         case 1:
