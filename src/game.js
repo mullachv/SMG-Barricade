@@ -169,31 +169,31 @@ angular.module('myApp')
                 };
                 $scope.isWinSpot = function (row, col) {
                     $log.info(["W"+row + col]);
-                    return $scope.state.board[row][col] === 'W';
+                    return $scope.board[row][col] === 'W';
                 };
                 $scope.isPieceR = function (row, col) {
                     $log.info(["R"+row + col]);
-                    return $scope.state.board[row][col] === 'R';
+                    return $scope.board[row][col] === 'R';
                 };
                 $scope.isPieceG = function (row, col) {
                     $log.info(["G"+row + col]);
-                    return $scope.state.board[row][col] === 'G';
+                    return $scope.board[row][col] === 'G';
                 };
                 $scope.isPieceB = function (row, col) {
                     $log.info(["B"+row + col]);
-                    return $scope.state.board[row][col] === 'B';
+                    return $scope.board[row][col] === 'B';
                 };
                 $scope.isPieceY = function (row, col) {
                     $log.info(["Y"+row + col]);
-                    return $scope.state.board[row][col] === 'Y';
+                    return $scope.board[row][col] === 'Y';
                 };
                 $scope.isBarricade = function (row, col) {
                     $log.info(["1"+row + col]);
-                    return $scope.state.board[row][col] === '1';
+                    return $scope.board[row][col] === '1';
                 };
                 $scope.isEmptySpot = function (row, col) {
                     $log.info(["0"+row + col]);
-                    return $scope.state.board[row][col] === '0';
+                    return $scope.board[row][col] === '0';
                 };
                 /*$scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
