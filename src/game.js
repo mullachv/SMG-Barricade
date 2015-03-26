@@ -113,7 +113,7 @@ angular.module('myApp')
                                 prev_row = null;
                                 prev_col = null;
                             } catch (e) {
-                                $log.info(["Illegal move from ", row, col, " to ", prev_row, prev_col]);
+                                $log.info(["Illegal move to ", row, col, " from ", prev_row, prev_col]);
                                 $scope.isYourTurn = true;
                                 prev_row = null;
                                 prev_col = null;
@@ -228,7 +228,7 @@ angular.module('myApp')
                 gameService.setGame({
                     gameDeveloperEmail: "hy821@nyu.edu",
                     minNumberOfPlayers: 2,
-                    maxNumberOfPlayers: 4,
+                    maxNumberOfPlayers: 2,
                     isMoveOk: gameLogic.isMoveOk,
                     updateUI: updateUI
                 });
