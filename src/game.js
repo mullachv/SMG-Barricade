@@ -167,7 +167,28 @@ angular.module('myApp')
                     var cell = $scope.board[row][col];
                     return cell !== "";
                 };
-                $scope.getImageSrc = function (row, col) {
+                $scope.isWinSpot = function (row, col) {
+                    return $scope.state.board[row][col] === 'W';
+                };
+                $scope.isPieceR = function (row, col) {
+                    return $scope.state.board[row][col] === 'R';
+                };
+                $scope.isPieceG = function (row, col) {
+                    return $scope.state.board[row][col] === 'G';
+                };
+                $scope.isPieceB = function (row, col) {
+                    return $scope.state.board[row][col] === 'B';
+                };
+                $scope.isPieceY = function (row, col) {
+                    return $scope.state.board[row][col] === 'Y';
+                };
+                $scope.isBarricade = function (row, col) {
+                    return $scope.state.board[row][col] === '1';
+                };
+                $scope.isEmptySpot = function (row, col) {
+                    return $scope.state.board[row][col] === '0';
+                };
+                /*$scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
                     if (row === 0 && col === 8 && cell === "W") {
                         return "imgs/WinningSpot.png";
@@ -179,7 +200,7 @@ angular.module('myApp')
                                     : cell === "G" ? "imgs/Green.png"
                                         : cell === "Y" ? "imgs/Yellow.png"
                                             : cell === "B" ? "imgs/Blue.png" : "";
-                };
+                };*/
                 $scope.getDiceSrc = function() {
                     switch($scope.dice) {
                         case 1:

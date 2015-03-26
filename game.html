@@ -36,11 +36,53 @@
       style="position:absolute; top:{{row * 6.25}}%; left:0; width:100%; height:6.25%;">
     <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]"
         style="position:absolute; top:0; left:{{col * 5.88}}%; width:5.88%; height:100%;"
-        ng-click="cellClicked(row, col)">
-      <img ng-class="{piece: true, slowlyAppear: shouldSlowlyAppear(row, col)}"
+        ng-click="cellClicked(row, col)"
+        id="{{'e2e_test_div_' + row + 'x' + col}}">
+      <div ng-class="{slowlyAppear: shouldSlowlyAppear(row, col)}"
           ng-show="shouldShowImage(row, col)"
-          ng-src="{{getImageSrc(row, col)}}"
-          id="{{'e2e_test_' + row + 'x' + col}}">
+          style="width:100%; height:100%">
+        <svg ng-show="isWinSpot(row,col)"
+          id="{{'e2e_test_winSpot'}}" width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="wheat" />
+        </svg>
+        <svg ng-show="isEmptySpot(row,col)"
+          id="{{'e2e_test_empty_' + row + 'x' + col}}"
+          width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="white" />
+        </svg>
+        <svg ng-show="isPieceR(row,col)"
+          id="{{'e2e_test_pieceR_' + row + 'x' + col}}"
+          width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="red" />
+        </svg>
+        <svg ng-show="isPieceG(row,col)"
+          id="{{'e2e_test_pieceG_' + row + 'x' + col}}"
+          width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="green" />
+        </svg>
+        <svg ng-show="isPieceB(row,col)"
+          id="{{'e2e_test_pieceB_' + row + 'x' + col}}"
+          width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="blue" />
+        </svg>
+        <svg ng-show="isPieceY(row,col)"
+          id="{{'e2e_test_pieceY_' + row + 'x' + col}}"
+          width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="yellow" />
+        </svg>
+        <svg ng-show="isBarricade(row,col)"
+          id="{{'e2e_test_barricade_' + row + 'x' + col}}"
+          width="100%" height="100%">
+            <circle cx="50%" cy="50%" r="27%"
+              stroke="black" stroke-width="5%" fill="black" />
+        </svg>
+      </div>
     </div>
   </div>
   <img ng-class="{piece: true}" ng-src="{{getDiceSrc()}}"
