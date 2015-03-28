@@ -1,6 +1,6 @@
 exports.config = {
   specs: ['src/end_to_end_tests.js'],
-  allScriptsTmeout: 11000,
+  allScriptsTmeout: 120000,
   directConnect: true, // only works with Chrome and Firefox
   capabilities: {
     'browserName': 'chrome'
@@ -8,6 +8,6 @@ exports.config = {
   baseUrl: 'http://localhost:32232/',
   framework: 'jasmine',
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 30000
+    defaultTimeoutInterval: 150000
   }
 };
