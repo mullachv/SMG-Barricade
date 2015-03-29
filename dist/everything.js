@@ -507,6 +507,30 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 $scope.isEmptySpot = function (row, col) {
                     return $scope.board[row][col] === '0';
                 };
+                $scope.isRedStart = function (row, col) {
+                    return isStart(0, row, col);
+                };
+                $scope.isGreenStart = function (row, col) {
+                    return isStart(1, row, col);
+                };
+                $scope.isYellowStart = function (row, col) {
+                    return isStart(2, row, col);
+                };
+                $scope.isBlueStart = function (row, col) {
+                    return isStart(3, row, col);
+                };
+                $scope.isNormalSpot = function(row, col) {
+                    return !$scope.isWinSpot(row, col) && !$scope.isRedStart(row, col) &&
+                    !$scope.isGreenStart(row, col) && !$scope.isYellowStart(row, col) &&
+                    !$scope.isBlueStart(row, col);
+                };
+                function isStart(index, row, col) {
+                    var targetCol = index * 4 + 2;
+                    return row === 13 && col === targetCol ||
+                    row === 14 && (col === targetCol - 1 || col === targetCol || col === targetCol + 1) ||
+                    row === 15 && (col === targetCol - 1 || col === targetCol + 1);
+                }
+
                 /*$scope.getImageSrc = function (row, col) {
                     var cell = $scope.board[row][col];
                     if (row === 0 && col === 8 && cell === "W") {

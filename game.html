@@ -31,7 +31,8 @@
 </head>
 <body ng-cloak ng-controller="Ctrl">
 
-<div id="gameArea" style="background-color:beige">
+<div id="gameArea">
+  <img src="imgs/board.png" width="100%" height="100%">
   <div ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"
       style="position:absolute; top:{{row * 6.25}}%; left:0; width:100%; height:6.25%;">
     <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]"
@@ -41,18 +42,6 @@
       <div ng-class="{slowlyAppear: shouldSlowlyAppear(row, col)}"
           ng-show="shouldShowImage(row, col)"
           style="width:100%; height:100%">
-        <svg ng-show="isWinSpot(row,col)"
-          id="{{'e2e_test_pieceW_' + row + 'x' + col}}"
-          width="100%" height="100%">
-            <circle cx="50%" cy="50%" r="27%"
-              stroke="dimgray" stroke-width="5%" fill="burlywood" />
-        </svg>
-        <svg ng-show="isEmptySpot(row,col)"
-          id="{{'e2e_test_piece0_' + row + 'x' + col}}"
-          width="100%" height="100%">
-            <circle cx="50%" cy="50%" r="27%"
-              stroke="dimgray" stroke-width="5%" fill="white" />
-        </svg>
         <svg ng-show="isPieceR(row,col)"
           id="{{'e2e_test_pieceR_' + row + 'x' + col}}"
           width="100%" height="100%">

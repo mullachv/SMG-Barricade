@@ -13,31 +13,7 @@ describe('Barricade', function() {
     return element(by.id('e2e_test_piece' + pieceKind + '_' + row + 'x' + col));
   }
 
-  function getDice() {
-    //var srcimg = element(by.id('e2e_test_dice')).getAttribute("ng-src");
-    var srcimg = element(document).getElementById('e2e_test_dice').getAttribute('src');
-    console.log(srcimg);
-    if (srcimg === 'http://localhost:32232/imgs/1.png') {
-      return 1;
-    } else if (srcimg === 'http://localhost:32232/imgs/2.png') {
-      return 2;
-    } else if (srcimg === 'http://localhost:32232/imgs/3.png') {
-      return 3;
-    } else if (srcimg === 'http://localhost:32232/imgs/4.png') {
-      return 4;
-    } else if (srcimg === 'http://localhost:32232/imgs/5.png') {
-      return 5;
-    } else if (srcimg === 'http://localhost:32232/imgs/6.png') {
-      return 6;
-    }
-  }
-
   function expectPiece(row, col, pieceKind) {
-    expect(
-      getPiece(row, col, 'W')
-        .isDisplayed())
-      .toEqual(pieceKind === 'W' ? true : false);
-    expect(getPiece(row, col, '0').isDisplayed()).toEqual(pieceKind === '0' ? true : false);
     expect(getPiece(row, col, '1').isDisplayed()).toEqual(pieceKind === '1' ? true : false);
     expect(getPiece(row, col, 'R').isDisplayed()).toEqual(pieceKind === 'R' ? true : false);
     expect(getPiece(row, col, 'G').isDisplayed()).toEqual(pieceKind === 'G' ? true : false);
@@ -68,8 +44,6 @@ describe('Barricade', function() {
   }
 
   function setMatchState(matchState, playMode) {
-    console.log("matchState: "+matchState);
-    console.log("playmode: "+playMode);
     browser.executeScript(function(matchStateInJson, playMode) {
       var stateService = window.e2e_test_stateService;
       stateService.setMatchState(angular.fromJson(matchStateInJson));
@@ -77,10 +51,6 @@ describe('Barricade', function() {
       angular.element(document).scope().$apply();
     }, JSON.stringify(matchState), JSON.stringify(playMode));
   }
-
-  it('should have a title', function() {
-    expect(browser.getTitle()).toEqual('Barricade');
-  });
 
   function getBoard(pieces) {
     var board =
@@ -112,6 +82,10 @@ describe('Barricade', function() {
     return board;
   }
 
+  it('should have a title', function() {
+    expect(browser.getTitle()).toEqual('Barricade');
+  });
+
   it('should have an initial board', function() {
     expectBoard(getBoard());
   });
@@ -125,77 +99,185 @@ describe('Barricade', function() {
       {set: {key: "type", value: "dice"}},
       {setRandomInteger: {key: "dice", from: 1, to : 7}}],
     lastState: {board: null, delta: null, dice: null, type: null},
-    currentState: {board: null, delta: null, dice: null, type: 'dice'},
+    currentState: {board: null, delta: {to_row:null, to_col:null, from_row:null, from_col:null}, dice: 2, type: 'dice'},
     lastVisibleTo: {},
     currentVisibleTo: {}
   };
-/*
-  it('should move R from 14x1 to 13x2 with dice 1', function() {
-    matchState0.currentState.dice = 1;
+
+  it('should move R from 14x1 to 13x3 with dice 2', function() {
     matchState0.lastState.board = getBoard();
     matchState0.currentState.board = getBoard();
     setMatchState(matchState0, 'passAndPlay');
 
-    click2DivsAndExpectPiece(14, 1, 13, 2, 'R');
+    click2DivsAndExpectPiece(14, 1, 13, 3, 'R');
     expectBoard(getBoard([
-      {pos: [13, 2], piece: 'R'},
+      {pos: [13, 3], piece: 'R'},
       {pos: [14, 1], piece: '0'}
       ]));
   });
-*/
-  it('should move R first onto an empty cell (or take place of a barricade)', function() {
-    var to_row, to_col, from_row = 14, from_col = 1,
-      dice = getDice();
-    console.log("dice"+dice);
-    matchState0.currentState.dice = dice;
-    matchState0.lastState.board = getBoard();
-    matchState0.currentState.board = getBoard();
+
+  it('should move R from 14x1 to 11x4 with dice 5 and place barricade at 13x5', function() {
+    matchState0.currentState.dice = 5;
     setMatchState(matchState0, 'passAndPlay');
 
-    if (dice === 5) {
-      to_row = 11;
-      to_col = 4;
-      click2DivsAndExpectPiece(from_row, from_col, to_row, to_col, 'R');
-      expectBoard(getBoard([
-        {pos:[to_row, to_col], piece:'R'},
-        {pos:[from_row, from_col], piece:'0'}
-        ]));
+    click2DivsAndExpectPiece(14, 1, 11, 4, 'R');
+    expectBoard(getBoard([
+      {pos:[11, 4], piece:'R'},
+      {pos:[14, 1], piece:'0'}
+      ]));
 
-      clickDivAndExpectBarricade(13, 5);
-      expectBoard(getBoard([
-        {pos:[to_row, to_col], piece:'R'},
-        {pos:[from_row, from_col], piece:'0'},
-        {pos:[13, 5], piece:'1'}
-        ]));
-    } else {
-      switch(dice) {
-        case 1:
-          to_row = 13;
-          to_col = 2;
-          break;
-        case 2:
-          to_row = 13;
-          to_col = 3;
-          break;
-        case 3:
-          to_row = 13;
-          to_col = 4;
-          break;
-        case 4:
-          to_row = 12;
-          to_col = 4;
-          break;
-        case 6:
-          to_row = 13;
-          to_col = 7;
-          break;
-      }
-      click2DivsAndExpectPiece(from_row, from_col, to_row, to_col, 'R');
-      expectBoard(getBoard([
-        {pos: [to_row, to_col], piece: 'R'},
-        {pos: [from_row, from_col], piece: '0'}
-        ]));
-    }
+    clickDivAndExpectBarricade(13, 5);
+    expectBoard(getBoard([
+      {pos:[11, 4], piece:'R'},
+      {pos:[14, 1], piece:'0'},
+      {pos:[13, 5], piece:'1'}
+      ]));
+  });
+
+  var matchState1 = {
+    // after first dice roll
+    turnIndexBeforeMove: 1,
+    turnIndex: 1,
+    endMatchScores: null,
+    lastMove: [{setTurn: {turnIndex: 1}},
+      {set: {key: "type", value: "dice"}},
+      {setRandomInteger: {key: "dice", from: 1, to : 7}}],
+    lastState: {board: null, delta: {to_row:13, to_col:3, from_row:14, from_col:1}, dice: 2, type: "normal"},
+    currentState: {board: null, delta: {to_row:null, to_col:null, from_row:null, from_col:null}, dice: 4, type: 'dice'},
+    lastVisibleTo: {},
+    currentVisibleTo: {}
+  };
+
+  it('Should move G from 15x5 to 13x3 with dice 4 and see R at 14x1', function() {
+    var board1 = getBoard([
+      {pos: [13, 3], piece: 'R'},
+      {pos: [14, 1], piece: '0'}
+    ]);
+    matchState1.lastState.board = board1;
+    matchState1.currentState.board = board1;
+    setMatchState(matchState1, 'passAndPlay');
+
+    click2DivsAndExpectPiece(15, 5, 13, 3, 'G');
+    expectBoard(getBoard([
+      {pos: [14, 1], piece: 'R'},
+      {pos: [15, 5], piece: '0'},
+      {pos: [13, 3], piece: 'G'}
+    ]));
+  });
+
+  it('Should ignore clicking on empty cell', function() {
+    setMatchState(matchState1, 'passAndPlay');
+    click2DivsAndExpectPiece(13, 4, 13, 8, '');
+    expectBoard(getBoard([
+      {pos: [13, 3], piece: 'R'},
+      {pos: [14, 1], piece: '0'}
+    ]));
+  });
+
+  it('Should ignore clicking on opponent pawn', function() {
+    setMatchState(matchState1, 'passAndPlay');
+    getDiv(13, 3).click();
+    getDiv(13, 7).click();
+    expectBoard(getBoard([
+      {pos: [13, 3], piece: 'R'},
+      {pos: [14, 1], piece: '0'}
+    ]));
+  });
+
+  it('Should ignore clicking on barricade', function() {
+    setMatchState(matchState1, 'passAndPlay');
+    getDiv(11, 4).click();
+    getDiv(13, 2).click();
+    expectBoard(getBoard([
+      {pos: [13, 3], piece: 'R'},
+      {pos: [14, 1], piece: '0'}
+    ]));
+  });
+
+  var matchState2 = {
+    // after first dice roll
+    turnIndexBeforeMove: 0,
+    turnIndex: 0,
+    endMatchScores: null,
+    lastMove: [{setTurn: {turnIndex: 0}},
+      {set: {key: "type", value: "dice"}},
+      {setRandomInteger: {key: "dice", from: 1, to : 7}}],
+    lastState: {board: null, delta: {to_row:1, to_col:9, from_row:1, from_col:11}, dice: 2, type: "normal"},
+    currentState: {board: null, delta: {to_row:null, to_col:null, from_row:null, from_col:null}, dice: 1, type: 'dice'},
+    lastVisibleTo: {},
+    currentVisibleTo: {}
+  };
+
+  it('Can start from a game about to end and win', function() {
+    var board1 = getBoard([
+      {pos: [1, 8], piece: 'R'},
+      {pos: [1, 7], piece: '1'},
+      {pos: [1, 11], piece: 'G'},
+      {pos: [14, 1], piece: '0'},
+      {pos: [14, 5], piece: '0'}
+    ]);
+    var board2 = getBoard([
+      {pos: [1, 8], piece: 'R'},
+      {pos: [1, 7], piece: '1'},
+      {pos: [1, 9], piece: 'G'},
+      {pos: [14, 1], piece: '0'},
+      {pos: [14, 5], piece: '0'}
+    ]);
+    matchState2.lastState.board = board1;
+    matchState2.currentState.board = board2;
+    setMatchState(matchState2, 'passAndPlay');
+    expectBoard(getBoard([
+      {pos: [1, 8], piece: 'R'},
+      {pos: [1, 7], piece: '1'},
+      {pos: [1, 9], piece: 'G'},
+      {pos: [14, 1], piece: '0'},
+      {pos: [14, 5], piece: '0'}
+    ]));
+    click2DivsAndExpectPiece(1, 8, 0, 8, 'R');
+    expectBoard(getBoard([
+      {pos: [0, 8], piece: 'R'},
+      {pos: [1, 8], piece: '0'},
+      {pos: [1, 7], piece: '1'},
+      {pos: [1, 9], piece: 'G'},
+      {pos: [14, 1], piece: '0'},
+      {pos: [14, 5], piece: '0'}
+    ]));
+  });
+
+  var matchState3 = {
+    // after first dice roll
+    turnIndexBeforeMove: 1,
+    turnIndex: 1,
+    endMatchScores: [1, 0],
+    lastMove: [{setTurn: {turnIndex: 1}},
+      {set: {key: "type", value: "dice"}},
+      {setRandomInteger: {key: "dice", from: 1, to : 7}}],
+    lastState: {board: null, delta: {to_row:0, to_col:8, from_row:1, from_col:8}, dice: 1, type: "normal"},
+    currentState: {board: null, delta: {to_row:null, to_col:null, from_row:null, from_col:null}, dice: 1, type: 'dice'},
+    lastVisibleTo: {},
+    currentVisibleTo: {}
+  };
+
+  it('Cannot click after game ends', function() {
+    var board3 = getBoard([
+      {pos: [0, 8], piece: 'R'},
+      {pos: [1, 7], piece: '1'},
+      {pos: [1, 9], piece: 'G'},
+      {pos: [14, 1], piece: '0'},
+      {pos: [14, 5], piece: '0'}
+    ]);
+    matchState3.lastState.board = getBoard([
+      {pos: [1, 8], piece: 'R'},
+      {pos: [1, 7], piece: '1'},
+      {pos: [1, 9], piece: 'G'},
+      {pos: [14, 1], piece: '0'},
+      {pos: [14, 5], piece: '0'}
+    ]);
+    matchState3.currentState.board = board3;
+    setMatchState(matchState3, 'passAndPlay');
+    getDiv(1, 9).click();
+    getDiv(1, 8).click();
+    expectBoard(board3);
   });
 
 });
