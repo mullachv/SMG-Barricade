@@ -253,12 +253,19 @@ angular.module('myApp')
                       var from_col = $scope.delta.from_col;
                       var to_row = $scope.delta.to_row;
                       var to_col = $scope.delta.to_col;
+                      var topLeftOld = getSquareTopLeft(from_row, from_col);
+                      var topLeftNew = getSquareTopLeft(to_row, to_col);
                       var pieceImg;
                       if (lastType === 'normal') {
                           pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+from_row+'x'+from_col);
                           pieceImg.className = 'scale';
+                          pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
+                          pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
+                          pieceImg.className = 'slowlyAppear';
                       } else if (lastType === 'barricade') {
-                          pieceImg = document.getElementById('e2e_test_piece1'+'_'+to_row+'x'+to_col);
+                          pieceImg = document.getElementById('e2e_test_piece1'+'_'+from_row+'x'+from_col);
+                          pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
+                          pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
                           pieceImg.className = 'slowlyAppear';
                       }
                     }
