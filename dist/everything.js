@@ -454,9 +454,9 @@ angular.module('myApp', []).factory('gameLogic', function () {
                             if ($scope.board[topos.row][topos.col] === '1') {
                                 draggingStartedRowCol = {row: topos.row, col: topos.col};
                                 draggingPiece = document.getElementById("spareBarricade");
+                                setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), 'barricade');
                                 draggingPiece.style['z-index'] = 0;
                                 draggingPiece.style.display = 'inline';
-                                setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), 'barricade');
                             }
                             setGlow(frompos.row, frompos.col, false);
                             gameService.makeMove(gameLogic.createMove(
