@@ -162,6 +162,9 @@ angular.module('myApp', []).factory('gameLogic', function () {
         if (board[to_row][to_col] !== '0') {
             throw new Error("One can only place barricade at an empty place!");
         }
+        if (to_row > 13 || to_row < 0 || to_col < 0 || to_col > 16) {
+            throw new Error("One cannot only place barricade in the base");
+        }
         var boardAfterMove = angular.copy(board);
         boardAfterMove[to_row][to_col] = '1';
         return [{setTurn: {turnIndex: 1 - turnIndexBeforeMove}},

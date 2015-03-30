@@ -162,6 +162,9 @@ angular.module('myApp', []).factory('gameLogic', function () {
         if (board[to_row][to_col] !== '0') {
             throw new Error("One can only place barricade at an empty place!");
         }
+        if (to_row > 13 || to_row < 0 || to_col < 0 || to_col > 16) {
+            throw new Error("One cannot only place barricade in the base");
+        }
         var boardAfterMove = angular.copy(board);
         boardAfterMove[to_row][to_col] = '1';
         return [{setTurn: {turnIndex: 1 - turnIndexBeforeMove}},
@@ -352,12 +355,19 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     var y = clientY - gameArea.offsetTop;
                     // Is outside gameArea?
                     if (x < 0 || y < 0 || x >= gameArea.clientWidth || y >= gameArea.clientHeight) {
-                      if (draggingPiece) {
-                        // Drag the piece where the touch is (without snapping to a square).
-                        var size = getSquareWidthHeight();
-                        setDraggingPieceTopLeft({top: y - size.height / 2, left: x - size.width / 2}, $scope.typeExpected);
-                      } else {
+                      if (!draggingPiece) {
                         return;
+                      }
+                        // Drag the piece where the touch is (without snapping to a square).
+                      var size = getSquareWidthHeight();
+                      setDraggingPieceTopLeft({top: y - size.height / 2, left: x - size.width / 2}, $scope.typeExpected);
+                      if (type === "touchend"){
+                        if ($scope.typeExpected === 'normal'){
+                          setGlow(draggingStartedRowCol.row, draggingStartedRowCol.col, false);
+                        }
+                        if ($scope.typeExpected === 'barricade') {
+                          draggingPiece.style.display = 'none';
+                        }
                       }
                     } else {
                       // Inside gameArea
@@ -389,17 +399,19 @@ angular.module('myApp', []).factory('gameLogic', function () {
                       } else {
                           // Drag continue
                           setDraggingPieceTopLeft(getSquareTopLeft(row, col), $scope.typeExpected);
-                          $log.info(["set pos "+ row+" "+col]);
                       }
                     }
 
-                    if (type === "touchend" && $scope.typeExpected !== 'barricade'||
+                    if (type === "touchend" ||
                         type === "touchcancel" || type === "touchleave") {
                       // drag ended
                       // return the piece to it's original style (then angular will take care to hide it).
                       setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
-                      if ($scope.typeExpected === 'normal') {
+                      if (type !== "touchend" && $scope.typeExpected === 'normal'){
                         setGlow(draggingStartedRowCol.row, draggingStartedRowCol.col, false);
+                      }
+                      if (type !== "touchend" && $scope.typeExpected === 'barricade') {
+                        draggingPiece.style.display = 'none';
                       }
                       draggingStartedRowCol = null;
                       //draggingPiece.removeAttribute("style"); // trying out
@@ -410,9 +422,9 @@ angular.module('myApp', []).factory('gameLogic', function () {
 
                 function isInvalidPos(topLeft) {
                   var size = getSquareWidthHeight();
-                  var row = topLeft.top / size.height;
-                  var col = topLeft.left / size.width;
-                  return $scope.board[row][col] === "";
+                  var row = Math.floor(topLeft.top / size.height);
+                  var col = Math.floor(topLeft.left / size.width);
+                  return row < 0 || row > 13 || col < 0 || col > 16 || $scope.board[row][col] === "";
                 }
                 function setDraggingPieceTopLeft(topLeft, moveType) {
                   var originalSize;
@@ -423,14 +435,12 @@ angular.module('myApp', []).factory('gameLogic', function () {
                   }
                   if (moveType === 'barricade') {
                     originalSize = getSquareTopLeft(0, 0);
-                    $log.info("barricade");
                   } else {
                     originalSize = getSquareTopLeft(row, col);
                   }
 
                   draggingPiece.style.left = topLeft.left - originalSize.left + "px";
                   draggingPiece.style.top = topLeft.top - originalSize.top + "px";
-                  $log.info([draggingPiece.id, draggingPiece.style.left, draggingPiece.style.top]);
                 }
 
                 function getSquareWidthHeight() {
@@ -459,18 +469,18 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     try {
                         $scope.isYourTurn = false;
                         if ($scope.typeExpected === 'normal') {
+                            setGlow(frompos.row, frompos.col, false);
+                            gameService.makeMove(gameLogic.createMove(
+                                $scope.board, "normal", $scope.dice, topos.row, topos.col,
+                                    frompos.row, frompos.col, $scope.turnIndex));
                             if ($scope.board[topos.row][topos.col] === '1') {
-                                $log.info(["get a barricade"]);
+                                //$log.info(["get a barricade"]);
                                 draggingStartedRowCol = {row: topos.row, col: topos.col};
                                 draggingPiece = document.getElementById("spareBarricade");
                                 setDraggingPieceTopLeft(getSquareTopLeft(topos.row, topos.col), 'barricade');
                                 draggingPiece.style['z-index'] = 0;
                                 draggingPiece.style.display = 'inline';
                             }
-                            setGlow(frompos.row, frompos.col, false);
-                            gameService.makeMove(gameLogic.createMove(
-                                $scope.board, "normal", $scope.dice, topos.row, topos.col,
-                                    frompos.row, frompos.col, $scope.turnIndex));
                         } else if ($scope.typeExpected === 'barricade'){
                             draggingPiece.style.display = 'none';
                             gameService.makeMove(gameLogic.createMove(
@@ -478,7 +488,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
                                     -1, -1, $scope.turnIndex));
                         }
                     } catch (e) {
-                        $log.info(["Illegal Move"]);
+                        $log.info(["Illegal Move", $scope.typeExpected, $scope.dice, frompos.row, frompos.col, topos.row, topos.col]);
+                        $log.info([e]);
                         $scope.isYourTurn = true;
                         setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
                     }
@@ -537,7 +548,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         $scope.board = gameLogic.getInitialBoard();
                     }
                     $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
-                        params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
+                        params.yourPlayerIndex === params.turnIndexAfterMove &&
+                        params.endMatchScores === null; // it's my turn
                     $scope.turnIndex = params.turnIndexAfterMove;
                     if (params.turnIndexBeforeMove !== params.turnIndexAfterMove) {
                         $scope.dice = null;
@@ -587,15 +599,26 @@ angular.module('myApp', []).factory('gameLogic', function () {
                       var pieceImg;
                       if (lastType === 'normal') {
                           pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+from_row+'x'+from_col);
-                          pieceImg.className = 'fadeout';
-                          pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
-                          pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
-                          pieceImg.className = 'slowlyAppear';
+                          if (pieceImg !== null){
+                            //$log.info(['original place', from_row, from_col]);
+                            pieceImg.className = 'fadeout';
+                            pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
+                            pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
+                            pieceImg.className = 'slowlyAppear';
+                          }else {
+                            //$log.info(['new place board',$scope.board]);
+                            //pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+to_row+'x'+to_col);
+                            //pieceImg.className = 'slowlyAppear';
+                          }
                       } else if (lastType === 'barricade') {
                           pieceImg = document.getElementById('e2e_test_piece1'+'_'+to_row+'x'+to_col);
-                          pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
-                          pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
-                          pieceImg.className = 'slowlyAppear';
+                          if (pieceImg !== null){
+                            pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
+                            pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
+                            pieceImg.className = 'slowlyAppear';
+                          } else {
+                            $log.info(['fail to catch barricade', to_row, to_col]);
+                          }
                       }
                     }
                 }
