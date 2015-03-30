@@ -744,7 +744,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
-                            $scope.delta.row === row && $scope.delta.col === col;
+                            $scope.delta.to_row === row && $scope.delta.to_col === col;
                 };
 
                 gameService.setGame({
