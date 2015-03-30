@@ -50,6 +50,12 @@ angular.module('myApp')
                           draggingPiece = document.getElementById("e2e_test_piece"+$scope.myPiece+"_"+row+"x"+col);
                           draggingPiece.style['z-index'] = ++nextZIndex;
                           setGlow(row, col, true);
+                        } else if ($scope.isYourTurn && $scope.typeExpected === 'barricade') {
+                            draggingStartedRowCol = {row: row, col: col};
+                            draggingPiece = document.getElementById("spareBarricade");
+                            setDraggingPieceTopLeft(getSquareTopLeft(row, col), 'barricade');
+                            draggingPiece.style['z-index'] = 0;
+                            draggingPiece.style.display = 'inline';
                         }
                       }
                       if (!draggingPiece) {
@@ -74,6 +80,8 @@ angular.module('myApp')
                       setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
                       if ($scope.typeExpected !== 'barricade') {
                         setGlow(draggingStartedRowCol.row, draggingStartedRowCol.col, false);
+                      } else {
+                        draggingPiece.style.display = 'none';
                       }
                       draggingStartedRowCol = null;
                       //draggingPiece.removeAttribute("style"); // trying out
@@ -131,19 +139,10 @@ angular.module('myApp')
                     try {
                         $scope.isYourTurn = false;
                         if ($scope.typeExpected === 'normal') {
-                            if ($scope.board[topos.row][topos.col] === '1') {
-                                draggingStartedRowCol = {row: topos.row, col: topos.col};
-                                draggingPiece = document.getElementById("spareBarricade");
-                                setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), 'barricade');
-                                draggingPiece.style['z-index'] = 0;
-                                draggingPiece.style.display = 'inline';
-                            }
-                            setGlow(frompos.row, frompos.col, false);
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "normal", $scope.dice, topos.row, topos.col,
                                     frompos.row, frompos.col, $scope.turnIndex));
                         } else if ($scope.typeExpected === 'barricade'){
-                            draggingPiece.style.display = 'none';
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "barricade", $scope.dice, topos.row, topos.col,
                                     -1, -1, $scope.turnIndex));
@@ -151,7 +150,6 @@ angular.module('myApp')
                     } catch (e) {
                         $log.info(["Illegal Move"]);
                         $scope.isYourTurn = true;
-                        setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
                     }
                   });
                 }
@@ -185,6 +183,7 @@ angular.module('myApp')
                 function updateUI(params) {
                     var lastType = params.stateAfterMove.type;
                     $scope.board = params.stateAfterMove.board;
+                    $scope.oldBoard = params.stateBeforeMove.board;
                     $scope.delta = params.stateAfterMove.delta;
                     $scope.dice = params.stateAfterMove.dice;
 
@@ -424,7 +423,8 @@ angular.module('myApp')
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
-                            $scope.delta.to_row === row && $scope.delta.to_col === col;
+                            $scope.delta.to_row === row && $scope.delta.to_col === col ||
+                            $scope.oldBoard && $scope.board[row][col] !== $scope.oldBoard[row][col];
                 };
 
                 gameService.setGame({
