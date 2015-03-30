@@ -143,10 +143,10 @@ angular.module('myApp')
                                 $scope.board, "normal", $scope.dice, topos.row, topos.col,
                                     frompos.row, frompos.col, $scope.turnIndex));
                         } else {
+                            draggingPiece.style.display = 'none';
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "barricade", $scope.dice, topos.row, topos.col,
                                     -1, -1, $scope.turnIndex));
-                            draggingPiece.style.display = 'none';
                         }
                     } catch (e) {
                         $log.info(["Illegal Move"]);
@@ -263,7 +263,7 @@ angular.module('myApp')
                           pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
                           pieceImg.className = 'slowlyAppear';
                       } else if (lastType === 'barricade') {
-                          pieceImg = document.getElementById('e2e_test_piece1'+'_'+from_row+'x'+from_col);
+                          pieceImg = document.getElementById('e2e_test_piece1'+'_'+to_row+'x'+to_col);
                           pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
                           pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
                           pieceImg.className = 'slowlyAppear';
