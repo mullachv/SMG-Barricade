@@ -142,7 +142,7 @@ angular.module('myApp')
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "normal", $scope.dice, topos.row, topos.col,
                                     frompos.row, frompos.col, $scope.turnIndex));
-                        } else {
+                        } else if ($scope.typeExpected === 'barricade'){
                             draggingPiece.style.display = 'none';
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "barricade", $scope.dice, topos.row, topos.col,
@@ -258,7 +258,7 @@ angular.module('myApp')
                       var pieceImg;
                       if (lastType === 'normal') {
                           pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+from_row+'x'+from_col);
-                          pieceImg.className = 'scale';
+                          pieceImg.className = 'fadeout';
                           pieceImg.style.top = topLeftOld.top - topLeftNew.top + 'px';
                           pieceImg.style.left = topLeftOld.left - topLeftNew.left + 'px';
                           pieceImg.className = 'slowlyAppear';

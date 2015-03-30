@@ -12,8 +12,8 @@
 }
 
 .slowlyAppear {
-  -webkit-animation: slowlyAppear 0.5s linear; /* Chrome, Safari, Opera */
-  animation: slowlyAppear 0.5s linear;
+  -webkit-animation: slowlyAppear 1s linear; /* Chrome, Safari, Opera */
+  animation: slowlyAppear 1s linear;
 }
 /* Chrome, Safari, Opera */
 @-webkit-keyframes slowlyAppear {
@@ -92,56 +92,28 @@
 }
 
 
-.scale {
-    position: absolute;
-    width: 80%;
-    top: 10%;
-    left: 10%;
-    -webkit-animation: scale 1s;   /* Chrome, Safari, Opera */
-    -moz-animation: scale 1s;
-    -o-animation: scale 1s;
-    animation: scale 1s;
+.fadeout {
+    -webkit-animation: fadeout 1s ease-out;   /* Chrome, Safari, Opera */
+    -moz-animation: fadeout 1s ease-out;
+    -o-animation: fadeout 1s ease-out;
+    animation: fadeout 1s ease-out;
 }
-@-webkit-keyframes scale {
-    0% {position: absolute;
-        width: 60%;
-        top: 20%;
-        left: 20%;}
-    50% {position: absolute;
-        width: 100%;
-        top: 0%;
-        left: 0%;}
+@-webkit-keyframes fadeout {
+    from {opacity:1;}
+    to {opacity:0.1;transform:scale(2);}
 }
 
-@-moz-keyframes scale {
-    0% {position: absolute;
-        width: 60%;
-        top: 20%;
-        left: 20%;}
-    50% {position: absolute;
-        width: 100%;
-        top: 0%;
-        left: 0%;}
+@-moz-keyframes fadeout {
+    from {opacity:1;}
+    to {opacity:0.1;transform:scale(2);}
 }
 
-@-o-keyframes scale {
-    0% {position: absolute;
-        width: 60%;
-        top: 20%;
-        left: 20%;}
-    50% {position: absolute;
-        width: 100%;
-        top: 0%;
-        left: 0%;}
+@-o-keyframes fadeout {
+    from {opacity:1;}
+    to {opacity:0.1;transform:scale(2);}
 }
 
-@keyframes scale {
-    0% {position: absolute;
-        width: 60%;
-        top: 20%;
-        left: 20%;}
-    50% {position: absolute;
-        width: 100%;
-        top: 0%;
-        left: 0%;}
+@keyframes fadeout {
+    from {opacity:1;}
+    to {opacity:0.1;transform:scale(2);}
 }
