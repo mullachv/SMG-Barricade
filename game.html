@@ -20,6 +20,7 @@
 
   <!-- build:js http://yoav-zibin.github.io/emulator/dist/gameServices.min.js -->
   <script src="http://yoav-zibin.github.io/emulator/alphaBetaService.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/examples/drag_n_drop/dragAndDropListeners.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/resizeGameAreaService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
@@ -33,11 +34,17 @@
 
 <div id="gameArea">
   <img src="imgs/board.png" width="100%" height="100%">
+
+  <svg id="spareBarricade" width="5.88%" height="6.25%"
+    style="display:none; position:absolute">
+      <circle cx="50%" cy="50%" r="27%"
+        stroke="dimgray" stroke-width="5%" fill="black" />
+  </svg>
+
   <div ng-repeat="row in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"
       style="position:absolute; top:{{row * 6.25}}%; left:0; width:100%; height:6.25%;">
     <div ng-repeat="col in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]"
         style="position:absolute; top:0; left:{{col * 5.88}}%; width:5.88%; height:100%;"
-        ng-click="cellClicked(row, col)"
         id="{{'e2e_test_div_' + row + 'x' + col}}">
       <div ng-class="{slowlyAppear: shouldSlowlyAppear(row, col)}"
           ng-show="shouldShowImage(row, col)"
@@ -75,11 +82,11 @@
       </div>
     </div>
   </div>
-  <img ng-class="{piece: true}" ng-src="{{getDiceSrc()}}"
+  <img class="dice" ng-src="{{getDiceSrc()}}"
       style="position:absolute; top:35%; left:85%; width:10%; height:10%"
       id="e2e_test_dice">
   <div class="button" ng-click="passMove()"
-      style="position:absolute; top:45%; left:85%; width:10%; height:7%; font-family:Papyrus"
+      style="position:absolute; top:47%; left:85%; width:10%; height:7%; font-family:Papyrus"
       id="e2e_test_btn" >
     Pass
   </div>

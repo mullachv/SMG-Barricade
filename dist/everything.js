@@ -319,12 +319,159 @@ angular.module('myApp', []).factory('gameLogic', function () {
 });
 ;angular.module('myApp')
     .controller('Ctrl',
-            ['$scope', '$log', '$timeout', 'gameService', 'stateService', 'gameLogic', 'resizeGameAreaService',
-            function ($scope, $log, $timeout, gameService, stateService, gameLogic, resizeGameAreaService) {
+            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'stateService', 'gameLogic', 'resizeGameAreaService',
+            function ($scope, $log, $timeout, $rootScope, gameService, stateService, gameLogic, resizeGameAreaService) {
 
                 'use strict';
 
+                var gameArea = document.getElementById("gameArea");
+                var rowsNum = 16;
+                var colsNum = 17;
+                var draggingStartedRowCol = null;
+                var draggingPiece = null;
+                var nextZIndex = 61;
+
+                function handleDragEvent(type, clientX, clientY) {
+                  $log.info([draggingPiece]);
+                    // Center point in gameArea
+                    var x = clientX - gameArea.offsetLeft;
+                    var y = clientY - gameArea.offsetTop;
+                    // Is outside gameArea?
+                    if (x < 0 || y < 0 || x >= gameArea.clientWidth || y >= gameArea.clientHeight) {
+                      if (draggingPiece) {
+                        // Drag the piece where the touch is (without snapping to a square).
+                        var size = getSquareWidthHeight();
+                        setDraggingPieceTopLeft({top: y - size.height / 2, left: x - size.width / 2}, $scope.typeExpected);
+                      } else {
+                        return;
+                      }
+                    } else {
+                      // Inside gameArea
+                      var col = Math.floor(colsNum * x / gameArea.clientWidth);
+                      var row = Math.floor(rowsNum * y / gameArea.clientHeight);
+
+                      if (type === "touchstart" && !draggingStartedRowCol) {
+                        if ($scope.board[row][col] === $scope.myPiece && $scope.isYourTurn && $scope.typeExpected==="normal") {
+                          draggingStartedRowCol = {row: row, col: col};
+                          draggingPiece = document.getElementById("e2e_test_piece"+$scope.myPiece+"_"+row+"x"+col);
+                          draggingPiece.style['z-index'] = ++nextZIndex;
+                        }
+                      }
+                      if (!draggingPiece) {
+                        $log.info(["not dragging any piece"]);
+                        return;
+                      }
+
+                      if (type === "touchend") {
+                        var frompos = draggingStartedRowCol;
+                        var topos = {row: row, col: col};
+                        dragDone(frompos, topos);
+                      } else {
+                          // Drag continue
+                          setDraggingPieceTopLeft(getSquareTopLeft(row, col), $scope.typeExpected);
+                          $log.info(["set pos "+ row+" "+col]);
+                      }
+                    }
+
+                    if (type === "touchend" && $scope.typeExpected !== "barricade" ||
+                        type === "touchcancel" || type === "touchleave") {
+                      // drag ended
+                      // return the piece to it's original style (then angular will take care to hide it).
+                      setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col));
+                      draggingStartedRowCol = null;
+                      //draggingPiece.removeAttribute("style"); // trying out
+                      draggingPiece = null;
+                    }
+                }
+                window.handleDragEvent = handleDragEvent;
+
+                function isInvalidPos(topLeft) {
+                  var size = getSquareWidthHeight();
+                  var row = topLeft.top / size.height;
+                  var col = topLeft.left / size.width;
+                  return $scope.board[row][col] === "";
+                }
+                function setDraggingPieceTopLeft(topLeft, movetype) {
+                  var originalSize;
+                  var row = draggingStartedRowCol.row;
+                  var col = draggingStartedRowCol.col;
+                  if (isInvalidPos(topLeft)) {
+                    return;
+                  }
+                  $log.info(["current row col:"+row+' '+col]);
+                  if (movetype === 'barricade'){
+                    originalSize = getSquareTopLeft(0, 0);
+                  } else {
+                    originalSize = getSquareTopLeft(row, col);
+                  }
+                  draggingPiece.style.left = topLeft.left - originalSize.left + "px";
+                  draggingPiece.style.top = topLeft.top - originalSize.top + "px";
+                  $log.info(['piece '+draggingPiece.style.left+' '+draggingPiece.style.top]);
+                }
+
+                function getSquareWidthHeight() {
+                  return {
+                    width: gameArea.clientWidth / colsNum,
+                    height: gameArea.clientHeight / rowsNum
+                  };
+                }
+
+                function getSquareTopLeft(row, col) {
+                  var size = getSquareWidthHeight();
+                  return {top: row * size.height, left: col * size.width};
+                }
+
                 resizeGameAreaService.setWidthToHeight(1.0625);
+
+                function dragDone(frompos, topos) {
+                  $log.info($scope.board);
+                  $rootScope.$apply(function () {
+                    var msg = "Dragged piece " + frompos.row + "x" + frompos.col + " to square " + topos.row + "x" + topos.col;
+                    $log.info(msg);
+                    $scope.msg = msg;
+                    // Update piece in board
+                    if (!$scope.isYourTurn) {
+                        return;
+                    }
+                    try {
+                        $scope.isYourTurn = false;
+                        if ($scope.typeExpected === 'normal') {
+                            if ($scope.board[topos.row][topos.col] === '1') {
+                                draggingStartedRowCol = {row: topos.row, col: topos.col};
+                                draggingPiece = document.getElementById("spareBarricade");
+                                draggingPiece.style['z-index'] = 0;
+                                draggingPiece.style.display = 'inline';
+                                setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), 'barricade');
+                            }
+                            gameService.makeMove(gameLogic.createMove(
+                                $scope.board, "normal", $scope.dice, topos.row, topos.col,
+                                    frompos.row, frompos.col, $scope.turnIndex));
+                        } else {
+                            gameService.makeMove(gameLogic.createMove(
+                                $scope.board, "barricade", $scope.dice, topos.row, topos.col,
+                                    -1, -1, $scope.turnIndex));
+                            draggingPiece.style.display = 'none';
+                        }
+                    } catch (e) {
+                        $log.info(["Illegal Move"]);
+                        $scope.isYourTurn = true;
+                        setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
+                    }
+                    $log.info([draggingPiece]);
+                  });
+                }
+
+                function getIntegersTill(number) {
+                  var res = [];
+                  for (var i = 0; i < number; i++) {
+                    res.push(i);
+                  }
+                  return res;
+                }
+                $scope.rows = getIntegersTill(rowsNum);
+                $scope.cols = getIntegersTill(colsNum);
+                $scope.rowsNum = rowsNum;
+                $scope.colsNum = colsNum;
 
                 function sendComputerNormalMove() {
                     gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
@@ -337,7 +484,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 }
 
                 function sendDiceMove() {
-                    $log.info(["Dice roll for", $scope.turnIndex]);
                     gameService.makeMove(gameLogic.createDiceMove($scope.dice, $scope.turnIndex));
                 }
 
@@ -346,34 +492,43 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     $scope.board = params.stateAfterMove.board;
                     $scope.delta = params.stateAfterMove.delta;
                     $scope.dice = params.stateAfterMove.dice;
-                    if ($scope.dice !== null) {
-                        $log.info(["Dice value ", $scope.dice]);
+
+                    var piece;
+                    switch(params.yourPlayerIndex) {
+                        case 0:
+                            piece = 'R';
+                            break;
+                        case 1:
+                            piece = 'G';
+                            break;
+                        case 2:
+                            piece = 'Y';
+                            break;
+                        case 3:
+                            piece = 'B';
                     }
+                    $scope.myPiece = piece;
+
                     if ($scope.board === undefined) {
-                        $log.info(["Initializing"]);
                         $scope.board = gameLogic.getInitialBoard();
                     }
                     $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
                         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
                     $scope.turnIndex = params.turnIndexAfterMove;
                     if (params.turnIndexBeforeMove !== params.turnIndexAfterMove) {
-                        $log.info(["Change player..."]);
                         $scope.dice = null;
                         $scope.typeExpected = "dice";
                     } else {
-                        $log.info(["Player continues..."]);
                         if (lastType === "normal") {
                             $scope.typeExpected = "barricade";
                         } else {
                             $scope.typeExpected = "normal";
                         }
-                        $log.info(["Player continues...", $scope.typeExpected]);
                     }
 
                     // Is it the computer's turn?
                     if ($scope.isYourTurn &&
                             params.playersInfo[params.yourPlayerIndex].playerId === '') {
-                        $log.info(["Computer turn"]);
                         $scope.isYourTurn = false; // to make sure the UI won't send another move.
                         // Waiting 0.5 seconds to let the move animation finish; if we call aiService
                         // then the animation is paused until the javascript finishes.
@@ -385,10 +540,30 @@ angular.module('myApp', []).factory('gameLogic', function () {
                             $timeout(sendComputerBarricadeMove, 500);
                         }
                     } else if ($scope.isYourTurn){
-                        $log.info(["Player turn with dice", $scope.dice]);
                         if (!$scope.dice) {
                             $timeout(sendDiceMove, 500);
                         }
+                    }
+
+                    // animation
+                    var diceImg = document.getElementById('e2e_test_dice');
+                    if (lastType === "dice") {
+                        diceImg.className = 'spinIn';
+                    }
+                    if ($scope.typeExpected === "dice") {
+                        diceImg.className = 'spinOut';
+                    }
+                    if (lastType === 'normal') {
+                        var from_row = $scope.delta.from_row;
+                        var from_col = $scope.delta.from_col;
+
+                        var to_row = $scope.delta.to_row;
+                        var to_col = $scope.delta.to_col;
+                        var top = (to_row - from_row) * 6.25/100;
+                        var left = (to_col - from_col) * 5.88/100;
+
+                        var pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+from_row+'x'+from_col);
+                        pieceImg.style = '{top:"'+top+'", left:"'+left+'", position: "relative", "-webkit-animation": "moveAnimation 2s", "animation": "moveAnimation 2s"}';
                     }
                 }
                 window.e2e_test_stateService = stateService; // to allow us to load any state in our e2e tests.
@@ -400,17 +575,14 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         throw new Error("Throwing the error because URL has '?throwException'");
                     }
                     if (!$scope.isYourTurn) {
-                        $log.info(["Wait until your turn"]);
                         return;
                     }
                     if (!$scope.dice) { // wait until dice rolls
-                        $log.info(["Wait until dice rolls"]);
                         return;
                     }
 
                     // normal move, get a pawn and place it.
                     if ($scope.typeExpected === "normal") {
-                        $log.info(["Make a normal move:"]);
                         // choose the start point
                         if (prev_row === null || prev_col === null) {
                             if ($scope.shouldShowImage(row, col) &&
@@ -440,7 +612,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                             }
                         }
                     } else if ($scope.typeExpected === "barricade"){
-                        $log.info(["Place a barricade"]);
                         if (prev_row === null || prev_col === null) {
                             $log.info(["Place a barricade at:", row, col]);
                             prev_row = null;
@@ -464,11 +635,9 @@ angular.module('myApp', []).factory('gameLogic', function () {
                           throw new Error("Throwing the error because URL has '?throwException'");
                       }
                       if (!$scope.isYourTurn) {
-                          $log.info(["Wait until your turn"]);
                           return;
                       }
                       if (!$scope.dice) { // wait until dice rolls
-                          $log.info(["Wait until dice rolls"]);
                           return;
                       }
                       if ($scope.typeExpected === "normal") {
@@ -531,19 +700,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     row === 15 && (col === targetCol - 1 || col === targetCol + 1);
                 }
 
-                /*$scope.getImageSrc = function (row, col) {
-                    var cell = $scope.board[row][col];
-                    if (row === 0 && col === 8 && cell === "W") {
-                        return "imgs/WinningSpot.png";
-                    }
-
-                    return cell === "0" ? "imgs/EmptySpot.png"
-                            : cell === "1" ? "imgs/Barricade.png"
-                                : cell === "R" ? "imgs/Red.png"
-                                    : cell === "G" ? "imgs/Green.png"
-                                        : cell === "Y" ? "imgs/Yellow.png"
-                                            : cell === "B" ? "imgs/Blue.png" : "";
-                };*/
                 $scope.getDiceSrc = function() {
                     switch($scope.dice) {
                         case 1:
@@ -559,8 +715,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         case 6:
                             return 'imgs/6.png';
                         default:
-                            //console.log('Error: dice out of range ' + $scope.dice);
-                            return 'imgs/6.png';
+                            return '';
                     }
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
