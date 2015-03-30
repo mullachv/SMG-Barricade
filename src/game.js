@@ -183,7 +183,6 @@ angular.module('myApp')
                 function updateUI(params) {
                     var lastType = params.stateAfterMove.type;
                     $scope.board = params.stateAfterMove.board;
-                    $scope.oldBoard = params.stateBeforeMove.board;
                     $scope.delta = params.stateAfterMove.delta;
                     $scope.dice = params.stateAfterMove.dice;
 
@@ -423,8 +422,7 @@ angular.module('myApp')
                 };
                 $scope.shouldSlowlyAppear = function (row, col) {
                     return $scope.delta !== undefined &&
-                            $scope.delta.to_row === row && $scope.delta.to_col === col ||
-                            $scope.oldBoard && $scope.board[row][col] !== $scope.oldBoard[row][col];
+                            $scope.delta.to_row === row && $scope.delta.to_col === col;
                 };
 
                 gameService.setGame({
