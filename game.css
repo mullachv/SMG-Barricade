@@ -17,22 +17,26 @@
 }
 /* Chrome, Safari, Opera */
 @-webkit-keyframes slowlyAppear {
-  from {opacity: 0.1;}
-  to {opacity: 1;}
+  0% {opacity: 0.1;}
+  50% {transform:scale(1.5);}
+  100% {opacity: 1;}
 }
 @-moz-keyframes slowlyAppear {
-  from {opacity: 0.1;}
-  to {opacity: 1;}
+  0% {opacity: 0.1;}
+  50% {transform:scale(1.5);}
+  100% {opacity: 1;}
 }
 
 @-o-keyframes slowlyAppear {
-  from {opacity: 0.1;}
-  to {opacity: 1;}
+  0% {opacity: 0.1;}
+  50% {transform:scale(1.5);}
+  100% {opacity: 1;}
 }
 /* Standard syntax */
 @keyframes slowlyAppear {
-  from {opacity: 0.1;}
-  to {opacity: 1;}
+  0% {opacity: 0.1;}
+  50% {transform:scale(1.5);}
+  100% {opacity: 1;}
 }
 
 /* for dice */
@@ -43,10 +47,10 @@
     animation: spinIn 0.5s ease-out;
 }
 .spinOut {
-    -webkit-animation: spinOut 2s 0.5s ease-in; /* Chrome, Safari, Opera */
-    -moz-animation: spinOut 2s 0.5s ease-in;
-    -o-animation: spinOut 2s 0.5s ease-in;
-    animation: spinOut 2s 0.5s ease-in;
+    -webkit-animation: spinOut 3s 0.5s ease-in; /* Chrome, Safari, Opera */
+    -moz-animation: spinOut 3s 0.5s ease-in;
+    -o-animation: spinOut 3s 0.5s ease-in;
+    animation: spinOut 3s 0.5s ease-in;
 }
 
 @-webkit-keyframes spinIn {
