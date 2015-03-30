@@ -332,7 +332,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 var nextZIndex = 61;
 
                 function handleDragEvent(type, clientX, clientY) {
-                  $log.info([draggingPiece]);
                     // Center point in gameArea
                     var x = clientX - gameArea.offsetLeft;
                     var y = clientY - gameArea.offsetTop;
@@ -358,7 +357,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         }
                       }
                       if (!draggingPiece) {
-                        $log.info(["not dragging any piece"]);
                         return;
                       }
 
@@ -398,7 +396,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                   if (isInvalidPos(topLeft)) {
                     return;
                   }
-                  $log.info(["current row col:"+row+' '+col]);
                   if (movetype === 'barricade'){
                     originalSize = getSquareTopLeft(0, 0);
                   } else {
@@ -424,7 +421,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 resizeGameAreaService.setWidthToHeight(1.0625);
 
                 function dragDone(frompos, topos) {
-                  $log.info($scope.board);
                   $rootScope.$apply(function () {
                     var msg = "Dragged piece " + frompos.row + "x" + frompos.col + " to square " + topos.row + "x" + topos.col;
                     $log.info(msg);
@@ -457,7 +453,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         $scope.isYourTurn = true;
                         setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
                     }
-                    $log.info([draggingPiece]);
                   });
                 }
 
