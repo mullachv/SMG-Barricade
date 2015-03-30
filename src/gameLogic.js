@@ -27,7 +27,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
         if (dice === 0) {
             return [[curr_row, curr_col]];
         }
-        if (board[curr_row][curr_col] === '1') {
+        if (board[curr_row][curr_col] === '1' || dice < 0) {
             return [];
         }
         var left = [], right = [], up = [], down = [], res = [];
@@ -314,6 +314,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
         createDiceMove: createDiceMove,
         createPassMove: createPassMove,
         isMoveOk: isMoveOk,
-        getRandomPossibleMove: getRandomPossibleMove
+        getRandomPossibleMove: getRandomPossibleMove,
+        getPossibleDestination: getPossibleDestination
     };
 });

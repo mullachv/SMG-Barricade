@@ -27,7 +27,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
         if (dice === 0) {
             return [[curr_row, curr_col]];
         }
-        if (board[curr_row][curr_col] === '1') {
+        if (board[curr_row][curr_col] === '1' || dice < 0) {
             return [];
         }
         var left = [], right = [], up = [], down = [], res = [];
@@ -314,7 +314,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
         createDiceMove: createDiceMove,
         createPassMove: createPassMove,
         isMoveOk: isMoveOk,
-        getRandomPossibleMove: getRandomPossibleMove
+        getRandomPossibleMove: getRandomPossibleMove,
+        getPossibleDestination: getPossibleDestination
     };
 });
 ;angular.module('myApp')
@@ -330,6 +331,20 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 var draggingStartedRowCol = null;
                 var draggingPiece = null;
                 var nextZIndex = 61;
+
+                function setGlow(row, col, value) {
+                  var dest;
+                  if (row > 13) {
+                      row = 13;
+                      col = Math.floor(col / 4) * 4 + 2;
+                      dest = gameLogic.getPossibleDestination($scope.board, $scope.dice - 1, row, col, -1, -1);
+                  } else {
+                      dest = gameLogic.getPossibleDestination($scope.board, $scope.dice, row, col, -1, -1);
+                  }
+                  for (var i = 0; i < dest.length; i++) {
+                      document.getElementById("e2e_test_div_"+dest[i][0]+"x"+dest[i][1]).style.border = value ? '#0000cc 1px dashed' : 'none';
+                  }
+                }
 
                 function handleDragEvent(type, clientX, clientY) {
                     // Center point in gameArea
@@ -354,6 +369,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                           draggingStartedRowCol = {row: row, col: col};
                           draggingPiece = document.getElementById("e2e_test_piece"+$scope.myPiece+"_"+row+"x"+col);
                           draggingPiece.style['z-index'] = ++nextZIndex;
+                          setGlow(row, col, true);
                         }
                       }
                       if (!draggingPiece) {
@@ -375,7 +391,10 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         type === "touchcancel" || type === "touchleave") {
                       // drag ended
                       // return the piece to it's original style (then angular will take care to hide it).
-                      setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col));
+                      setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
+                      if ($scope.typeExpected !== 'barricade') {
+                        setGlow(draggingStartedRowCol.row, draggingStartedRowCol.col, false);
+                      }
                       draggingStartedRowCol = null;
                       //draggingPiece.removeAttribute("style"); // trying out
                       draggingPiece = null;
@@ -403,7 +422,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                   }
                   draggingPiece.style.left = topLeft.left - originalSize.left + "px";
                   draggingPiece.style.top = topLeft.top - originalSize.top + "px";
-                  $log.info(['piece '+draggingPiece.style.left+' '+draggingPiece.style.top]);
+                  $log.info([draggingPiece.id, draggingPiece.style.left, draggingPiece.style.top]);
                 }
 
                 function getSquareWidthHeight() {
@@ -439,6 +458,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                                 draggingPiece.style.display = 'inline';
                                 setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), 'barricade');
                             }
+                            setGlow(frompos.row, frompos.col, false);
                             gameService.makeMove(gameLogic.createMove(
                                 $scope.board, "normal", $scope.dice, topos.row, topos.col,
                                     frompos.row, frompos.col, $scope.turnIndex));
@@ -548,17 +568,19 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     if ($scope.typeExpected === "dice") {
                         diceImg.className = 'spinOut';
                     }
-                    if (lastType === 'normal') {
-                        var from_row = $scope.delta.from_row;
-                        var from_col = $scope.delta.from_col;
-
-                        var to_row = $scope.delta.to_row;
-                        var to_col = $scope.delta.to_col;
-                        var top = (to_row - from_row) * 6.25/100;
-                        var left = (to_col - from_col) * 5.88/100;
-
-                        var pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+from_row+'x'+from_col);
-                        pieceImg.style = '{top:"'+top+'", left:"'+left+'", position: "relative", "-webkit-animation": "moveAnimation 2s", "animation": "moveAnimation 2s"}';
+                    if ($scope.delta) {
+                      var from_row = $scope.delta.from_row;
+                      var from_col = $scope.delta.from_col;
+                      var to_row = $scope.delta.to_row;
+                      var to_col = $scope.delta.to_col;
+                      var pieceImg;
+                      if (lastType === 'normal') {
+                          pieceImg = document.getElementById('e2e_test_piece'+piece+'_'+from_row+'x'+from_col);
+                          pieceImg.className = 'scale';
+                      } else if (lastType === 'barricade') {
+                          pieceImg = document.getElementById('e2e_test_piece1'+'_'+to_row+'x'+to_col);
+                          pieceImg.className = 'slowlyAppear';
+                      }
                     }
                 }
                 window.e2e_test_stateService = stateService; // to allow us to load any state in our e2e tests.
