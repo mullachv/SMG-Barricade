@@ -1,7 +1,7 @@
 angular.module('myApp')
     .controller('Ctrl',
-            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'stateService', 'gameLogic', 'resizeGameAreaService',
-            function ($scope, $log, $timeout, $rootScope, gameService, stateService, gameLogic, resizeGameAreaService) {
+            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService',
+            function ($scope, $log, $timeout, $rootScope, gameService, stateService, gameLogic, aiService, resizeGameAreaService) {
 
                 'use strict';
 
@@ -166,7 +166,6 @@ angular.module('myApp')
                         }
                     } catch (e) {
                         $log.info(["Illegal Move", $scope.typeExpected, $scope.dice, frompos.row, frompos.col, topos.row, topos.col]);
-                        $log.info([e]);
                         $scope.isYourTurn = true;
                         setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
                     }
@@ -186,13 +185,14 @@ angular.module('myApp')
                 $scope.colsNum = colsNum;
 
                 function sendComputerNormalMove() {
-                    gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
-                        "normal", $scope.dice, $scope.turnIndex));
+                    //gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board, "normal", $scope.dice, $scope.turnIndex));
+
+                    gameService.makeMove(aiService.createComputerMove($scope.board, "normal", $scope.dice, $scope.turnIndex));
                 }
 
                 function sendComputerBarricadeMove() {
-                    gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
-                        "barricade", -1, $scope.turnIndex));
+                    //gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board, "barricade", -1, $scope.turnIndex));
+                    gameService.makeMove(aiService.createComputerMove($scope.board, "barricade", -1, $scope.turnIndex));
                 }
 
                 function sendDiceMove() {

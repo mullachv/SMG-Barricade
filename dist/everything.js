@@ -323,8 +323,8 @@ angular.module('myApp', []).factory('gameLogic', function () {
 });
 ;angular.module('myApp')
     .controller('Ctrl',
-            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'stateService', 'gameLogic', 'resizeGameAreaService',
-            function ($scope, $log, $timeout, $rootScope, gameService, stateService, gameLogic, resizeGameAreaService) {
+            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService',
+            function ($scope, $log, $timeout, $rootScope, gameService, stateService, gameLogic, aiService, resizeGameAreaService) {
 
                 'use strict';
 
@@ -489,7 +489,6 @@ angular.module('myApp', []).factory('gameLogic', function () {
                         }
                     } catch (e) {
                         $log.info(["Illegal Move", $scope.typeExpected, $scope.dice, frompos.row, frompos.col, topos.row, topos.col]);
-                        $log.info([e]);
                         $scope.isYourTurn = true;
                         setDraggingPieceTopLeft(getSquareTopLeft(draggingStartedRowCol.row, draggingStartedRowCol.col), $scope.typeExpected);
                     }
@@ -509,13 +508,14 @@ angular.module('myApp', []).factory('gameLogic', function () {
                 $scope.colsNum = colsNum;
 
                 function sendComputerNormalMove() {
-                    gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
-                        "normal", $scope.dice, $scope.turnIndex));
+                    //gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board, "normal", $scope.dice, $scope.turnIndex));
+
+                    gameService.makeMove(aiService.createComputerMove($scope.board, "normal", $scope.dice, $scope.turnIndex));
                 }
 
                 function sendComputerBarricadeMove() {
-                    gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board,
-                        "barricade", -1, $scope.turnIndex));
+                    //gameService.makeMove(gameLogic.getRandomPossibleMove($scope.board, "barricade", -1, $scope.turnIndex));
+                    gameService.makeMove(aiService.createComputerMove($scope.board, "barricade", -1, $scope.turnIndex));
                 }
 
                 function sendDiceMove() {
@@ -787,3 +787,259 @@ angular.module('myApp', []).factory('gameLogic', function () {
                     updateUI: updateUI
                 });
             }]);
+;angular.module('myApp').factory('aiService',
+    ["gameLogic", function(gameLogic) {
+
+  'use strict';
+
+  function getHighestPosition(board, piece) {
+    for (var i = 0; i < 16; i+= 1) {
+      for (var j = 0; j < 17; j += 1) {
+        if (board[i][j] === piece) {
+          return [i, j];
+        }
+      }
+    }
+  }
+
+  function createComputerMove(board, moveType, dice, playerIndex) {
+      if (moveType === 'normal') {
+          return createNormalMove(board, dice, playerIndex);
+      } else {
+          return createBarricadeMove(board, playerIndex);
+      }
+  }
+
+  function createNormalMove(board, dice, playerIndex) {
+      var piece = playerIndex === 0 ? 'R' : 'G';
+      var currentPos = getCurrentPositions(board, piece); //[[row1, col1], [row2, col2], [row3, col3], [row4, col4], [row5, col5]]
+
+      // get all possible moves
+      var onBarricadeMoves = [];
+      var onOpponentMoves = [];
+      var onEmptyMoves = [];
+      for (var i = 0; i < currentPos.length; i++) {
+        var row = currentPos[i][0];
+        var col = currentPos[i][1];
+        var destinations;
+
+        if (row > 13) { // new from base
+          var startRow = 13;
+          var startCol = Math.floor(col / 4) * 4 + 2;
+          destinations = gameLogic.getPossibleDestination(board, dice - 1,
+              startRow, startCol, -1, -1);
+        } else {
+          destinations = gameLogic.getPossibleDestination(board, dice,
+              row, col, -1, -1);
+        }
+
+        for (var j = 0; j < destinations.length; j++) {
+          var pos = destinations[j];
+          var option = {from: currentPos[i], to: pos};
+
+          // classify all the moves
+          /*if (pos === [0, 8]) {
+            return gameLogic.createMove(board, 'normal', dice, 0, 8, row, col, playerIndex);
+          }*/
+          // classify all the moves
+          switch (board[pos[0]][pos[1]]) {
+            case '1':
+              onBarricadeMoves.push(option);
+              break;
+            case 'W':
+              return gameLogic.createMove(board, 'normal', dice, 0, 8, row, col, playerIndex);
+            case piece:
+              throw new Error("Error finding a path");
+            case '0':
+              onEmptyMoves.push(option);
+              break;
+            default:
+              onOpponentMoves.push(option);
+              break;
+          }
+        }
+        if (row > 13) {
+          break;
+        }
+      }
+
+      var bestOption;
+      if (onBarricadeMoves.length !== 0) {
+        // final circle inward > high move higher > new pawn > move parallel > move lower
+        bestOption = getBestMove(onBarricadeMoves, dice);
+      } else if (onOpponentMoves.length !== 0) {
+        // final circle > high move higher > move parallel > new pawn > move lower
+        bestOption = getBestMove(onOpponentMoves, dice);
+      } else if (onEmptyMoves.length !== 0) {
+        // final circle > high move higher > new pawn > move parallel > pass > move lower
+        bestOption = getBestMove(onEmptyMoves, dice);
+      } else {
+        // pass
+        return gameLogic.createPassMove(board, dice, playerIndex);
+      }
+      return gameLogic.createMove(board, 'normal', dice, bestOption.to[0], bestOption.to[1], bestOption.from[0], bestOption.from[1], playerIndex);
+  }
+  function createBarricadeMove(board, playerIndex) {
+      var piece = playerIndex === 0 ? 'R' : 'G';
+      var opponent = playerIndex === 0 ? 'G' : 'R';
+
+      var piecePos = getHighestPosition(board, piece);
+      var oppoPos = getHighestPosition(board, opponent);
+      var i, j;
+
+      if (oppoPos[0] > 13) { // the oppnents are all in the base
+        if (opponent === 'G') {
+          for (i = 13; i > 0; i -= 1) {
+            for (j = oppoPos[1]; j < oppoPos[1] + 2; j += 1) {
+              if (board[i][j] === '0') {
+                return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                    playerIndex);
+              }
+            }
+          }
+        }else if (opponent === 'R') {
+          for (i = 13; i > 0; i -= 1) {
+            for (j = 0; j < 4; j += 1) {
+              if (board[i][j] === '0') {
+                return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                    playerIndex);
+              }
+            }
+          }
+        }
+      } else if (piecePos[0] < oppoPos[0]) { // the opponnet falls behind
+        for (i = piecePos[0] + 1; i < 14; i += 1) {
+          for (j = 0; j < 17; j += 1) {
+            if (board[i][j] === '0') {
+              return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                  playerIndex);
+            }
+          }
+        }
+      } else if (piecePos[0] > oppoPos[0]) { // the opponent leads
+        for (i = oppoPos[0] - 1; i > 0; i -= 1) {
+          for (j = 0; j < 17; j += 1) {
+            if (board[i][j] === '0') {
+              return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                  playerIndex);
+            }
+          }
+        }
+        i = oppoPos[0];
+        for (j = 0; j < 17; j += 1) {
+          if (board[i][j] === '0') {
+            return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                playerIndex);
+          }
+        }
+      } else { // neck by neck
+
+        if (piecePos[1] < oppoPos[1]) {
+
+          // block right part
+          if (piecePos[0] === 1 && oppoPos[1] < 8) {
+            // right of opponent
+            for (i = 1; i < 14; i += 1) {
+              for (j = oppoPos[1] + 1; j < 17; j += 1) {
+                if (board[i][j] === '0') {
+                  return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                      playerIndex);
+                }
+              }
+            }
+          } else {
+            // right of self
+            for (i = 1; i < 14; i += 1) {
+              for (j = oppoPos[1] - 1; j > piecePos[1]; j -= 1) {
+                if (board[i][j] === '0') {
+                  return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                      playerIndex);
+                }
+              }
+              for (j = oppoPos[1] + 1; j < 17; j += 1) {
+                if (board[i][j] === '0') {
+                  return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                      playerIndex);
+                }
+              }
+            }
+          }
+
+        } else {
+
+          // block left part
+          if (piecePos[0] === 1 && oppoPos[1] > 8) {
+            // left of opponent
+            for (i = 1; i < 14; i += 1) {
+              for (j = oppoPos[1] - 1; j >= 0; j -= 1) {
+                if (board[i][j] === '0') {
+                  return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                      playerIndex);
+                }
+              }
+            }
+          } else {
+            // left of self
+            for (i = oppoPos[0]; i > 0; i -= 1) {
+              for (j = oppoPos[1] + 1; j < piecePos[1]; j += 1) {
+                if (board[i][j] === '0') {
+                  return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                      playerIndex);
+                }
+              }
+              for (j = oppoPos[1] - 1; j >= 0; j -= 1) {
+                if (board[i][j] === '0') {
+                  return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                      playerIndex);
+                }
+              }
+            }
+          }
+        }
+      }
+      for (i = 1; i < 14; i += 1) {
+        for (j = 0; j < 17; j += 1) {
+          if (board[i][j] === '0') {
+            return gameLogic.createMove(board, "barricade", -1, i, j, -1, -1,
+                playerIndex);
+          }
+        }
+      }
+  }
+  function getCurrentPositions(board, piece) {
+    var currentPos = [];
+    for (var i = 0; i < 16; i+= 1) {
+      for (var j = 0; j < 17; j += 1) {
+        if (board[i][j] === piece) {
+          currentPos.push([i, j]);
+        }
+      }
+    }
+    if (currentPos.length !== 5) {
+      throw new Error('Cheating on pieces');
+    }
+    return currentPos;
+  }
+  function getBestMove(moves, dice){
+    var bestScore;
+    var bestOption;
+
+    for (var j = 0; j < moves.length; j++) {
+      var curOption = moves[j];
+
+      var frompos = curOption.from;
+      var topos = curOption.to;
+
+      var curScore = 1 - topos[0] / 16 + (frompos[0] - topos[0])/dice +
+          (frompos[0] > 13 ? 0.5 : 0);
+
+      if (!bestScore || bestScore < curScore) {
+        bestScore = curScore;
+        bestOption = curOption;
+      }
+    }
+    return bestOption;
+  }
+
+  return {createComputerMove: createComputerMove};
+}]);
