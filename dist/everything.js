@@ -849,7 +849,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
             case 'W':
               return gameLogic.createMove(board, 'normal', dice, 0, 8, row, col, playerIndex);
             case piece:
-              throw new Error("Error finding a path");
+              break;
             case '0':
               onEmptyMoves.push(option);
               break;
