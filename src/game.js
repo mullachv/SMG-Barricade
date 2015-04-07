@@ -63,6 +63,9 @@ angular.module('myApp')
                             setDraggingPieceTopLeft(getSquareTopLeft(row, col), 'barricade');
                             draggingPiece.style['z-index'] = 60;
                             draggingPiece.style.display = 'inline';
+                         } else if (row === 8 && (col === 15 || col === 16)) {
+                           draggingStartedRowCol = {row: row, col: col};
+                           draggingPiece = document.getElementById("e2e_test_btn");
                          }
                       }
                       if (!draggingPiece) {
@@ -72,7 +75,11 @@ angular.module('myApp')
                       if (type === "touchend") {
                         var frompos = draggingStartedRowCol;
                         var topos = {row: row, col: col};
-                        dragDone(frompos, topos);
+                        if (row === 8 && (col === 15 || col === 16)) {
+                          passMove();
+                        } else {
+                          dragDone(frompos, topos);
+                        }
                       } else {
                           // Drag continue
                           setDraggingPieceTopLeft(getSquareTopLeft(row, col), $scope.typeExpected);
@@ -363,7 +370,7 @@ angular.module('myApp')
                         }
                     }
                 };
-                $scope.passMove = function() {
+                function passMove() {
                       if (window.location.search === '?throwException') { // to test encoding a stack trace with sourcemap
                           throw new Error("Throwing the error because URL has '?throwException'");
                       }
@@ -383,7 +390,7 @@ angular.module('myApp')
                               return;
                           }
                       }
-                };
+                }
                 $scope.shouldShowImage = function (row, col) {
                     var cell = $scope.board[row][col];
                     return cell !== "";
