@@ -15,6 +15,11 @@
 
   <script src="http://yoav-zibin.github.io/emulator/dist/dragAndDropListeners.min.js"></script>
 
+  <script>
+  window.angularTranslationLanguages = ['en', 'zh'];
+  </script>
+  <script src="http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js"></script>
+
   <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
@@ -77,7 +82,7 @@
   <div class="button"
       style="position:absolute; top:50%; left:88.2%; width:11.8%; height:6.25%; font-family:Papyrus"
       id="e2e_test_btn" >
-    Pass
+    {{'PASS'|translate}}
   </div>
 </div>
 

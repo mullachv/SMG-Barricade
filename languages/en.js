@@ -1,3 +1,4 @@
-window.angularTranslations = {
-  TICTACTOE_GAME: "TicTacToe"
-};
+window.angularTranslationsLoaded('en', {
+  BARRICADE_GAME: "Barricade",
+  PASS: "Pass"
+});
