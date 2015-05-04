@@ -9,16 +9,15 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
 
+  <!-- For the game rules/instructions, I use carousel from Angular UI + Bootstrap -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
+
   <script src="dist/everything.min.js"></script>
 
-  <script src="http://yoav-zibin.github.io/emulator/dist/gameServices.min.js"></script>
-
-  <script src="http://yoav-zibin.github.io/emulator/dist/dragAndDropListeners.min.js"></script>
-
-  <script>
-  window.angularTranslationLanguages = ['en', 'zh'];
-  </script>
-  <script src="http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js"></script>
+  <script>window.angularTranslationLanguages = ['en', 'zh'];</script>
+  <script src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
   <link rel="stylesheet" type="text/css" href="game.css">
@@ -82,7 +81,7 @@
   <div class="button"
       style="position:absolute; top:50%; left:88.2%; width:11.8%; height:6.25%; font-family:Papyrus"
       id="e2e_test_btn" >
-    {{'PASS'|translate}}
+    {{ 'PASS' | translate }}
   </div>
 </div>
 

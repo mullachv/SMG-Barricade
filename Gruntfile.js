@@ -83,11 +83,12 @@ module.exports = function(grunt) {
           basePath: '.',
           cache: [
             'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js',
-            'http://yoav-zibin.github.io/emulator/dist/gameServices.min.js',
-            'http://yoav-zibin.github.io/emulator/dist/dragAndDropListeners.min.js',
-            'http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js',
-            'languages/en.js',
-            'languages/zh.js',
+            'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.min.js',
+            'http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js',
+            'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css',
+            'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.woff',
+            'http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regular.ttf',
+            'http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js',
             'http://yoav-zibin.github.io/emulator/main.css',
             'dist/everything.min.js',
             'game.css',
@@ -99,7 +100,12 @@ module.exports = function(grunt) {
             'imgs/6.png',
             'imgs/board.png'
           ],
-          network: ['dist/everything.min.js.map', 'dist/everything.js'],
+          network: [
+            'languages/en.js',
+            'languages/zh.js',
+            'dist/everything.min.js.map',
+            'dist/everything.js'
+          ],
           timestamp: true
         },
         dest: 'game.appcache',

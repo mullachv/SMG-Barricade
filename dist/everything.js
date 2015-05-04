@@ -323,10 +323,13 @@ angular.module('myApp', []).factory('gameLogic', function () {
 });
 ;angular.module('myApp')
     .controller('Ctrl',
-            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService',
-            function ($scope, $log, $timeout, $rootScope, gameService, stateService, gameLogic, aiService, resizeGameAreaService) {
+            ['$scope', '$log', '$timeout', '$rootScope', 'gameService', 'dragAndDropService',
+            'stateService', 'gameLogic', 'aiService', 'resizeGameAreaService', '$translate',
+            function ($scope, $log, $timeout, $rootScope, gameService, dragAndDropService,
+              stateService, gameLogic, aiService, resizeGameAreaService, $translate) {
 
                 'use strict';
+                console.log("Translation of 'BARRICADE_GAME' is " + $translate('BARRICADE_GAME'));
 
                 var gameArea = document.getElementById("gameArea");
                 var rowsNum = 16;
@@ -425,7 +428,7 @@ angular.module('myApp', []).factory('gameLogic', function () {
                       draggingPiece = null;
                     }
                 }
-                window.handleDragEvent = handleDragEvent;
+                dragAndDropService.addDragListener("gameArea", handleDragEvent);
 
                 function isInvalidPos(topLeft) {
                   var size = getSquareWidthHeight();

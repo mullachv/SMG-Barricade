@@ -10,7 +10,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+  <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script>
+  <!-- /build -->
+
+  <!-- For the game rules/instructions, I use carousel from Angular UI + Bootstrap -->
+  <!-- build:css http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.css">
+  <!-- /build -->
+  <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.min.js -->
+  <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.js"></script>
+  <!-- /build -->
+  <!-- build:js http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js -->
+  <script crossorigin="anonymous" src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js"></script>
   <!-- /build -->
 
   <!-- build:js dist/everything.min.js -->
@@ -19,23 +30,9 @@
   <script src="src/aiService.js"></script>
   <!-- /build -->
 
-  <!-- build:js http://yoav-zibin.github.io/emulator/dist/gameServices.min.js -->
-  <script src="http://yoav-zibin.github.io/emulator/alphaBetaService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/resizeGameAreaService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
-  <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
-  <!-- /build -->
-
-  <!-- build:js http://yoav-zibin.github.io/emulator/dist/dragAndDropListeners.min.js -->
-  <script src="http://yoav-zibin.github.io/emulator/examples/drag_n_drop/dragAndDropListeners.js"></script>
-  <!-- /build -->
-
-  <script>
-  window.angularTranslationLanguages = ['en', 'zh'];
-  </script>
-  <!-- build:js http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js -->
-  <script src="http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.js"></script>
+  <script>window.angularTranslationLanguages = ['en', 'zh'];</script>
+  <!-- build:js http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js -->
+  <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.js"></script>
   <!-- /build -->
 
   <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
@@ -100,7 +97,7 @@
   <div class="button"
       style="position:absolute; top:50%; left:88.2%; width:11.8%; height:6.25%; font-family:Papyrus"
       id="e2e_test_btn" >
-    {{'PASS'|translate}}
+    {{ 'PASS' | translate }}
   </div>
 </div>
 
