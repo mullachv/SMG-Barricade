@@ -98,7 +98,16 @@ module.exports = function(grunt) {
             'imgs/4.png',
             'imgs/5.png',
             'imgs/6.png',
-            'imgs/board.png'
+            'imgs/board.png',
+            'imgs/HelpSlide0.png',
+            'imgs/HelpSlide1.png',
+            'imgs/HelpSlide2.png',
+            'imgs/HelpSlide3.png',
+            'imgs/HelpSlide4.png',
+            'imgs/HelpSlide5.png',
+            'imgs/HelpSlide6.png',
+            'imgs/HelpSlide7.png',
+            'imgs/HelpSlide8.png'
           ],
           network: [
             'languages/en.js',
