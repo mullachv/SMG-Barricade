@@ -79,6 +79,9 @@ angular.module('myApp')
                         var frompos = draggingStartedRowCol;
                         var topos = {row: row, col: col};
                         if (row === 8 && (col === 15 || col === 16)) {
+                          if ($scope.typeExpected === 'normal'){
+                            setGlow(draggingStartedRowCol.row, draggingStartedRowCol.col, false);
+                          }
                           passMove();
                         } else {
                           dragDone(frompos, topos);
