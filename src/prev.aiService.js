@@ -1,4 +1,5 @@
-angular.module('myApp', ['gameServices']).factory('aiService', function() {
+angular.module('myApp').factory('aiService',
+    ["gameLogic", function(gameLogic) {
 
   'use strict';
 
@@ -252,4 +253,4 @@ angular.module('myApp', ['gameServices']).factory('aiService', function() {
   }
 
   return {createComputerMove: createComputerMove};
-});
+}]);

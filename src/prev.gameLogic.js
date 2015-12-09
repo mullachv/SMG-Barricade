@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngTouch', 'ui.bootstrap', 'gameServices']).factory('gameLogic', function () {
+angular.module('myApp', ['ngTouch', 'ui.bootstrap']).factory('gameLogic', function () {
     'use strict';
     function getInitialBoard() { // 0..15 * 0..16
         return [['', '', '', '', '', '', '', '', 'W', '', '', '', '', '', '', '', ''], // 0
