@@ -17,12 +17,12 @@
   <script src="dist/everything.min.js"></script>
 
   <script>window.angularTranslationLanguages = ['en', 'zh'];</script>
-  <script src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js"></script>
+  <script src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.3.min.js"></script>
 
   <link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
   <link rel="stylesheet" type="text/css" href="game.css">
 </head>
-<body ng-cloak ng-controller="Ctrl">
+<body ng-cloak>
 
   <div style="position:absolute; bottom:5px; left: 5px; z-index: 10;">
     <span ng-click="isHelpModalShown = true"
@@ -169,40 +169,40 @@
         stroke="dimgray" stroke-width="5%" fill="black" />
   </svg>
 
-  <div ng-repeat="row in rows"
+  <div ng-repeat="row in game.rows"
       style="position:absolute; top:{{row * 6.25}}%; left:0; width:100%; height:6.25%;">
-    <div ng-repeat="col in cols"
+    <div ng-repeat="col in game.cols"
         style="position:absolute; top:0; left:{{col * 5.88}}%; width:5.88%; height:100%;"
         id="{{'e2e_test_div_' + row + 'x' + col}}">
-      <div ng-class="{slowlyAppear: shouldSlowlyAppear(row, col)}"
-          ng-show="shouldShowImage(row, col)"
+      <div ng-class="{slowlyAppear: game.shouldSlowlyAppear(row, col) }"
+          ng-show="game.shouldShowImage(row, col)"
           style="width:100%; height:100%">
 
-        <svg ng-show="isPieceR(row,col)"
+        <svg ng-show="game.isPieceR(row,col)"
           id="{{'e2e_test_pieceR_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="35%"
               stroke="dimgray" stroke-width="5%" fill="lightcoral" />
         </svg>
-        <svg ng-show="isPieceG(row,col)"
+        <svg ng-show="game.isPieceG(row,col)"
           id="{{'e2e_test_pieceG_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="35%"
               stroke="dimgray" stroke-width="5%" fill="olivedrab" />
         </svg>
-        <svg ng-show="isPieceB(row,col)"
+        <svg ng-show="game.isPieceB(row,col)"
           id="{{'e2e_test_pieceB_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="35%"
               stroke="dimgray" stroke-width="5%" fill="lightskyblue" />
         </svg>
-        <svg ng-show="isPieceY(row,col)"
+        <svg ng-show="game.isPieceY(row,col)"
           id="{{'e2e_test_pieceY_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="35%"
               stroke="dimgray" stroke-width="5%" fill="orange" />
         </svg>
-        <svg ng-show="isBarricade(row,col)"
+        <svg ng-show="game.isBarricade(row,col)"
           id="{{'e2e_test_piece1_' + row + 'x' + col}}"
           width="100%" height="100%">
             <circle cx="50%" cy="50%" r="35%"
@@ -211,7 +211,7 @@
       </div>
     </div>
   </div>
-  <img class="dice" ng-src="{{getDiceSrc()}}"
+  <img class="dice" ng-src="{{game.getDiceSrc()}}"
       style="position:absolute; top:40%; left:88.2%; width:10%; height:10%"
       id="e2e_test_dice">
   <div class="button"
